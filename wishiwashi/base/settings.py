@@ -3,9 +3,6 @@ from decimal import Decimal
 
 import dj_database_url
 from django.core.urlresolvers import reverse_lazy
-from dotenv import load_dotenv
-
-load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -60,14 +57,7 @@ ROOT_URLCONF = 'base.urls'
 WSGI_APPLICATION = 'base.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',  
-    }
+    'default': dj_database_url.config()
 }
 # Requests handled inside a transaction
 DATABASES['default']['ATOMIC_REQUESTS'] = True
