@@ -15,28 +15,22 @@ def authorize_charge(amount, token, currency="gbp"):
 
     support.stripe.com/questions/does-stripe-support-authorize-and-capture
     """
-    print('1STTTTTTTTTT')
-    print(amount)
-    print(token)
-    #amount = 5.45
+
     stripe.api_version = settings.STRIPE_API_VERSION
     stripe.api_key = settings.STRIPE_API_KEY
     charge = stripe.Charge.create(amount=amount,
                                   currency=currency,
                                   card=token,
                                   capture=False)
-    print('2RRRRRRRRRRRRRRRR')
 
     if not getattr(charge, 'id', None):
         raise AttributeError(
             "Stripe charge id does not exist: {}".format(charge))
-    print('3PPPPPPPP')
 
     if not getattr(charge, 'created', None):
         raise AttributeError(
             "Stripe timestamp does not exist: {}".format(charge))
 
-    print(charge)
     return charge
 
 
