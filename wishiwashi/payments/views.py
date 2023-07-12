@@ -87,7 +87,6 @@ def charge(request):
                                       token=form.cleaned_data['stripeToken'])
             charge_time = timezone.now()
         except stripe.error.CardError as e:
-            print('FIRST ERRO')
             err = e.json_body['error']
             msg = "Card failure: {}".format(err['message'])
             logger.info(msg)
@@ -110,7 +109,6 @@ def charge(request):
             order.save()
             return redirect(reverse('payments:landing'))
         except Exception as e:
-            print('SECOND ERRO')
             logger.error("Charge id failure for user: {}".format(request.user.email))
             logger.exception("Charge threw unexpected exception")
             messages.error(request, "Unable to charge your credit card")
