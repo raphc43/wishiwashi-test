@@ -1,0 +1,35 @@
+{% load add_one_hour %}
+{% load humanize %}
+{% load postcodes %}
+
+<div class="row">
+    <div class="col-xs-12 order-card" data-order-id="{{ order.pk }}">
+        <div class='left big'>{{ order.pick_up_and_delivery_address.postcode|default:''|format_postcode }}</div>
+        <div class='right big'>&pound;{{order.total_price_of_order|floatformat:2|intcomma }}</div>
+        <div class='clear'></div>
+        <br/>
+        <p>Pick up <strong>{{ order.pick_up_time|date:'l jS M gA' }} - {{ order.pick_up_time|add_one_hour|time:'gA' }}</strong></p>
+        <p>Drop off <strong>{{ order.drop_off_time|date:'l jS M gA' }} - {{ order.drop_off_time|add_one_hour|time:'gA' }}</strong></p>
+        
+        <div class='clear'></div>
+
+        <div class='left'>
+            <a href="{% url 'vendors:order' order.pk %}">View order</a>
+        </div>
+        <div class='right'>
+            {% if is_wishi_washi %}
+                {% if order.can_throw_back %}
+                    <form action="{% url 'vendors:throw_orders_back_in_pool' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="order_{{ order.pk }}" value="on" />
+                        <input type="submit" name="submit" value="Throw back" />
+                    </form>
+                {% else %}
+                    &nbsp;
+                {% endif %}
+            {% else %}
+                &nbsp;
+            {% endif %}
+        </div>
+    </div>
+</div>

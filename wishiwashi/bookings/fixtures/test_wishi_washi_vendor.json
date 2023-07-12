@@ -1,0 +1,85 @@
+[
+{
+    "fields": {
+        "town_or_city": "",
+        "flat_number_house_number_building_name": "1",
+        "postcode": "W11AA",
+        "instructions_for_delivery": "",
+        "address_line_2": "",
+        "address_line_1": "High St."
+    },
+    "model": "bookings.address",
+    "pk": 1
+},
+{
+    "fields": {
+        "start_hour": 10,
+        "end_hour": 17,
+        "day_of_week": 0
+    },
+    "model": "bookings.operatingtimerange",
+    "pk": 1
+},
+{
+    "fields": {
+        "start_hour": 8,
+        "end_hour": 20,
+        "day_of_week": 1
+    },
+    "model": "bookings.operatingtimerange",
+    "pk": 2
+},
+{
+    "fields": {
+        "start_hour": 8,
+        "end_hour": 20,
+        "day_of_week": 2
+    },
+    "model": "bookings.operatingtimerange",
+    "pk": 3
+},
+{
+    "fields": {
+        "start_hour": 9,
+        "end_hour": 21,
+        "day_of_week": 3
+    },
+    "model": "bookings.operatingtimerange",
+    "pk": 4
+},
+{
+    "fields": {
+        "start_hour": 8,
+        "end_hour": 18,
+        "day_of_week": 4
+    },
+    "model": "bookings.operatingtimerange",
+    "pk": 5
+},
+{
+    "fields": {
+        "address": 1,
+        "capacity_per_hour": 6,
+        "last_viewed_the_orders_page": "2015-01-01T00:00:00Z",
+        "catchment_area": [
+            2892,
+            2919,
+            2920,
+            2651,
+            2647,
+            2665
+        ],
+        "company_name": "Wishi Washi",
+        "hours_of_operation": [
+            1,
+            2,
+            3,
+            4,
+            5
+        ],
+        "staff": []
+    },
+    "model": "bookings.vendor",
+    "pk": 1
+}
+]

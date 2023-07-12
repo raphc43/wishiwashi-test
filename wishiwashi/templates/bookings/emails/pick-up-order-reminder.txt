@@ -1,0 +1,21 @@
+{% load add_one_hour %}
+{% load humanize %}Hello {{ order.customer.first_name }} {{ order.customer.last_name }},
+
+Just to let you know, we are on our way to pick up your items!
+
+===============================================================================
+
+Order: {{ order.uuid }}
+
+Pick up address:
+{% include "snippets/address.txt" with address=order.pick_up_and_delivery_address %}
+
+Pick up time: {{ order.pick_up_time|date:'l jS F' }} between {{ order.pick_up_time|time:'gA' }} & {{ order.pick_up_time|add_one_hour|time:'gA' }}
+
+Items to pick up:{% for items in order.items.all %}
+{{ items.item.name }} x {{ items.quantity }}
+{% endfor %}
+
+See you soon!
+
+Wishi Washi

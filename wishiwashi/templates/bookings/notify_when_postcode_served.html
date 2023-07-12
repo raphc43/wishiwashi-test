@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load postcodes %}
+
+{% block content %}
+<div class="container">
+    <div class="col-md-offset-2 col-md-8">
+        <h1>Thank you</h1>
+        <p>We will let you know when we are serving {{out_code|format_postcode|default:"[Postcode missing]"}}.</p>
+
+        <p>If <strong>{{postcode|format_postcode|default:"[Postcode missing]"}}</strong> is not your postcode then please <a href="{% url 'landing' %}">click here</a> to use your correct postcode.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block ga_track_custom_var %}
+    _gaq.push(['_setCustomVar', 1, 'out_code', '{{out_code|lower}}', 1]);
+{% endblock %}

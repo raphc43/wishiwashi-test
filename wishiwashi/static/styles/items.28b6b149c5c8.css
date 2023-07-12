@@ -1,0 +1,138 @@
+.nav-item-wrapper {
+    -webkit-border-radius: 3px 3px 3px 3px;
+    border-radius: 3px 3px 3px 3px;
+    border: 3px solid #068CB3;
+    width: 100%;
+    margin-bottom: 16px;
+    background-color: #00ADE0;
+    cursor: pointer;
+}
+.nav-item-wrapper .nav-item-label {
+    -webkit-border-radius: 3px 3px 3px 3px;
+    border-radius: 3px 3px 3px 3px;
+    color: #ffffff;
+    font-size: 18px;
+    padding-left: 12px;
+    padding-top: 8px;
+    font-weight: 700;
+    background-color: #00ADE0;
+    float: left;
+    height: 44px;
+    width: auto;
+    cursor: pointer;
+}
+.nav-item-wrapper .nav-item-amount {
+    float: right;
+    height: 44px;
+    width: 55px;
+    background-color: #66CBE8;
+    color: #fff;
+    font-size: 30px;
+    font-weight: 900;
+    text-align: center;
+    cursor: pointer;
+}
+
+.nav-item-wrapper.selected {
+    border: 3px solid #25256A;
+    background-color: #2D2E83;
+    cursor: default !important;
+}
+
+.nav-item-wrapper.selected .nav-item-label {
+    cursor: default !important;
+    background-color: #2D2E83;
+}
+
+.nav-item-wrapper.selected .nav-item-amount {
+    cursor: default !important;
+    background-color: #ffffff;
+    color: #000;
+}
+
+.item-wrapper {
+    -webkit-border-radius: 3px 3px 3px 3px;
+    border-radius: 3px 3px 3px 3px;
+    border: 3px solid #fff;
+    min-height: 350px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.item-title-bar {
+    color: #0081ad;
+    font-weight: 400;
+    font-size: 20px;
+    background-color: #66CBE8;
+    margin-top: 0;
+    padding-top: 0;
+}
+.item-name {
+    padding-top: 8px;
+    padding-left: 16px;
+    cursor: default;
+    color: #2D2E83; 
+    font-size: 18px;
+    font-weight: 700;
+    padding-right: 10px;
+    padding-top: 9px;
+    min-height: 46px;
+}
+.item-price {
+    background-color: #00b8d8;
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 18px;
+    text-align: right;
+    padding-right: 10px;
+    padding-top: 9px;
+    min-height: 46px;
+    cursor: default;
+}
+.item-description-wrapper {
+    text-align: right;
+    color: #ffffff;
+    font-size: 15px;
+    width: 100%;
+    padding: 8px;
+    cursor: default;
+}
+.item-quantity-wrapper {
+    position: absolute;
+    bottom: 0;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, .6);
+    padding: 5px;
+    text-align: right;
+    color: #ffffff;
+    font-size: 14px;
+    width: 100%;
+}
+.item-quantity-wrapper label {
+    margin-right: 16px;
+}
+.item-quantity-wrapper select {
+    color: #000;
+    margin-right: 16px;
+}
+.total-price {
+    text-align: right;
+    font-size: 18px;
+    font-weight: 700;
+}
+#transit, #free-transit {
+    font-size: 13px;
+    font-weight: 400;
+    display: none;
+}
+#transit .price {
+    color: #B12704;
+    font-weight: 600;
+}
+#free-transit {
+    color: #33924A;
+}

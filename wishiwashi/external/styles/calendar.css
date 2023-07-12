@@ -1,0 +1,86 @@
+.pre-load {
+    width: 1px;
+    height: 1px;
+    opacity: 0.0;
+    z-index: 1000;
+    position: absolute;
+    left: -100px;
+    top: -100px;
+}
+#desktop .calendar-month-label,
+#mobile .calendar-month-label {
+    font-size: 19px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 16px;
+}
+#desktop div.calendar-date-wrapper,
+#mobile div.calendar-date-wrapper {
+    text-align: center;
+    font-weight: 900;
+    font-size: 48px;
+    background-color: #00ade0;
+    min-height: 100px;
+    width: 99px;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    border-radius: 3px 3px 3px 3px;
+    -webkit-box-shadow: 0px 5px 5px 0 rgba(0,0,0,0.34);
+    box-shadow: 0px 5px 5px 0 rgba(0,0,0,0.34);
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=3,Direction=135,Color='#606060')";
+    margin: 0 auto;
+    margin-bottom: 32px;
+    color: #fff;
+}
+div.calendar-date-wrapper div.day-of-week {
+    background-color: #9fd8f2;
+    color: #2d2e83;
+    text-align: center;
+    font-weight: 400;
+    padding: 8px;
+    font-size: 16px;
+    -webkit-border-radius: 3px 3px 0px 0px;
+    border-radius: 3px 3px 0px 0px;
+}
+#desktop div.time-slot,
+#mobile div.time-slot {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 18px;
+    text-align: center;
+    background-color: #00ade0;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    border-radius: 3px 3px 3px 3px;
+    border: 3px solid #068cb3;
+    cursor: pointer;
+    margin-top: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    padding: 4px;
+    white-space: nowrap;
+}
+#desktop div.time-slot {
+    width: 104px;
+}
+#desktop div.unavailable-slot,
+#mobile div.unavailable-slot {
+    color: #999999 !important;
+    border: 3px solid #b1a7b5 !important;
+    background-color: #635d65 !important;
+    cursor: default !important;
+}
+#desktop div.selected-slot,
+#mobile div.selected-slot {
+    color: #ffffff !important;
+    border: 3px solid #25256a !important;
+    background-color: #2d2e83 !important;
+    cursor: pointer !important;
+}
+#desktop img.selected-slot-checkmark,
+#mobile img.selected-slot-checkmark {
+    top: 11px;
+    position: absolute;
+    left: 60%;
+    z-index: 5;
+    cursor: pointer !important;
+}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+        <h1>Frequently Asked Questions</h1>
+        </div>
+    </div>
+
+    {% for question in questions %}
+    <div class="row">
+        <div class="col-xs-12">
+            {% ifchanged question.category.name %}
+                {% if not forloop.first %}
+                    <br>
+                {% endif %}
+
+                <h2>{{question.category.name}}</h2>
+                <hr>
+            {% endifchanged %}
+            <p><a href="{% url 'faq:question' slug=question.slug %}">{{question.question}}</a></p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "emails/base.html" %}
+
+{% load add_one_hour %}
+{% load email_fonts %}
+{% load humanize %}
+
+{% block main_content %}
+    Hello {{ order.customer.first_name }} {{ order.customer.last_name }},
+    <br />
+    <br />
+    Just to let you know, we are on our way to deliver your items!
+    </p>
+    <h1>Order: {{ order.uuid }}</h1>
+    <p>Delivery address: <br />
+    {% include "snippets/address.html" with address=order.pick_up_and_delivery_address %}
+    </p>
+    <p>Delivery time: <strong>{{ order.drop_off_time|date:'l jS F' }} </strong>
+                between <strong>{{ order.drop_off_time|time:'gA' }} &amp; {{ order.drop_off_time|add_one_hour|time:'gA' }}</strong></p>
+
+
+    <p><strong>Items to deliver:</strong></p>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for items in order.items.all %}
+            <tr>
+                <td>{{ items.item.name }}</td>
+                <td>{{ items.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p>
+        See you soon!<br />
+        Wishi Washi
+    </p>
+{% endblock %}

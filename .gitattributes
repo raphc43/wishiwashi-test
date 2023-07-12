@@ -1,0 +1,11 @@
+*.css text eol=lf
+.gitattributes text eol=lf
+.gitignore text eol=lf
+*.html text eol=lf
+*.ini text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.py text eol=lf
+*.rst text eol=lf
+*.sh text eol=lf
+*.txt text eol=lf

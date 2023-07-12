@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load add_one_hour %}
+{% load humanize %}
+{% load phone_numbers %}
+{% load postcodes %}
+{% load staticfiles %}
+
+{% block css_top %}
+<style>
+table td.number,
+table th.number {
+    text-align: right;
+    padding-right: 16px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'snippets/print-header.html' %}
+<div class="container">
+    <div class="row hidden-print hidden-xs">
+        <a role="button" onclick="window.print(); return false" class="btn btn-primary pull-right" >Print <i class="fa fa-print"></i></a>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Your order has been placed.</h1>
+            <p>We have authorised your credit card and will charge you on <strong>{{credit_card_charge_time|date:'l, F jS'}}</strong>.</p>
+            <p>You will receive your confirmation email shortly.</p>
+            <p>If there are any issues or concerns then please contact our Customer Service Team on <a href="tel:{{UK_PHONE_NUMBER_UGLY}}"><strong>{{UK_PHONE_NUMBER}}</strong></a>.</p>
+            <p>We will send you a reminder email 1 hour before we are due to pick up your items, and 1 hour before we are due to deliver your items.</p>
+            <p>Thank you for choosing Wishi Washi!</p>
+            <hr>
+            <h2>Order # {{order.uuid|upper}}</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-6">
+            <h2>Pick up</h2>
+            <p>
+                <strong>{{ order.pick_up_time|date:'l, F jS' }}</strong><br/>
+                Between <strong>{{ order.pick_up_time|time:'gA' }} &amp; {{ order.pick_up_time|add_one_hour|time:'gA' }}</strong>
+            </p>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-6">
+            <h2>Delivery</h2>
+            <p>
+                <strong>{{ order.drop_off_time|date:'l, F jS' }}</strong><br/>
+                Between <strong>{{ order.drop_off_time|time:'gA' }} &amp; {{ order.drop_off_time|add_one_hour|time:'gA' }}</strong>
+            </p>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            <h2>Address</h2>
+            <p>
+                <strong>
+                    {{ order.pick_up_and_delivery_address.flat_number_house_number_building_name }}
+                    {{ order.pick_up_and_delivery_address.address_line_1 }}
+                    <br/>
+                    {% if order.pick_up_and_delivery_address.address_line_2 %}
+                        {{ order.pick_up_and_delivery_address.address_line_2 }}
+                        <br/>
+                    {% endif %}
+                </strong>
+                London, <strong>{{ order.pick_up_and_delivery_address.postcode|format_postcode }}</strong>
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Items</h2>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th class="number">Quantity</th>
+                        <th class="number">Prices</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for details in order.items.all %}
+                        <tr>
+                            <td>{{ details.item.category.name }} - {{ details.item.name }}</td>
+                            <td class="number">{{ details.quantity }}</td>
+                            <td class="number">&pound;{{ details.price|floatformat:2|intcomma }}</td>
+                        </tr>
+                    {% endfor %}
+
+                    {% if order.voucher %}
+                        <tr>
+                            <td><strong>Discount applied using voucher code "{{ order.voucher.voucher_code|upper}}"</strong></td>
+                            <td colspan="2" class="number"><strong>-{{ order.voucher.percentage_off|floatformat:"-1" }} &#37;</strong></td>
+                        </tr>
+                    {% endif %}
+
+                    <tr>
+                        <td colspan="3" class="number">Pick up and delivery: &pound;{{ order.transportation_charge|floatformat:2|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="number">Total Before VAT: &pound;{{ order.price_excluding_vat_charge|floatformat:2|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="number">VAT: &pound;{{ order.vat_charge|floatformat:2|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="number"><strong>Grand Total: &pound;{{ order.total_price_of_order|floatformat:2|intcomma }}</strong></td>
+                    </tr>
+ 
+                </tbody>
+            </table>
+            <p class="text-center">Thank you once again for choosing Wishi Washi!</p>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block ga_track_transaction %}
+    {% if items %}
+        {% for item in items %}
+            _gaq.push(['_addItem',
+              '{{ order.uuid }}',         // transaction ID - necessary to associate item with transaction
+              '{{ item.product_id }}',         // SKU/code - required
+              '{{ item.product_name|safe }}',      // product name - necessary to associate revenue with product
+              '{{ item.category_name|safe }}', // category or variation
+              '{{ item.unit_price }}',        // unit price - required
+              '{{ item.quantity }}'             // quantity - required
+           ]);
+        {% endfor %}
+    {% endif %}
+
+    _gaq.push(['_addTrans',
+       '{{ order.uuid }}', // transaction ID - required
+       'Wishi Washi', // affiliation or store name
+       '{{ grand_total_net_vat }}', // total - required; Shown as "Revenue" in the
+                                    // Transactions report. Does not include Tax and Shipping.
+       '{{ vat }}', // tax
+       '0.00', // shipping
+       'London', // city
+       '', // state or province
+       'United Kingdom' // country
+    ]);
+    _gaq.push(['_trackTrans']);
+{% endblock %}

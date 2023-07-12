@@ -1,0 +1,27 @@
+{% extends "vendors/base.html" %}
+
+{% load humanize %}
+
+{% block desktop_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Order #{{ order.uuid|upper }} has been taken already</h1>
+
+            <p>Another vendor has managed to accept this order{% if order.order_claimed_time %} {{order.order_claimed_time|naturaltime}}{% endif %}.</p>
+
+            <p>Please visit the <a href="{% url 'vendors:orders' %}">orders page</a> and wait for other orders to come through.</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block mobile_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Order #{{ order.uuid|upper }} has been taken already</h1>
+
+            <p>Another vendor has managed to accept this order{% if order.order_claimed_time %} {{order.order_claimed_time|naturaltime}}{% endif %}.</p>
+
+            <p>Please visit the <a href="{% url 'vendors:orders' %}">orders page</a> and wait for other orders to come through.</p>
+        </div>
+    </div>
+{% endblock %}

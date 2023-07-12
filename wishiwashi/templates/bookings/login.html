@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="col-md-offset-2 col-md-8">
+        <h1>Log in</h1>
+        <form method="post" action="{% url 'bookings:login' %}">
+            <input type="hidden" name="next" value="{{form.next.value|default:''}}" />
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-warning" aria-hidden="true"></i>
+                <span class="sr-only">Error:</span>
+                 {% for error in form.non_field_errors %}
+                     {{ error }}<br>
+                 {% endfor %}
+            </div>
+            {% endif %}
+            <div class="form-group{% if form.email_address.errors %} has-error{% endif %}">
+                <label for="email_address">{{form.email_address.label}}</label>
+                <input type="text" name="email_address" id="email_address" value="{{form.email_address.value|default:''}}" class="form-control">
+                {% if form.email_address.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <i class="fa fa-warning" aria-hidden="true"></i>
+                    <span class="sr-only">Error:</span>
+                     {% for error in form.email_address.errors %}
+                         {{ error }}<br>
+                     {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group{% if form.password.errors %} has-error{% endif %}">
+               <label for="password">{{form.password.label}}</label>
+               <input type="password" id="password" name="password" class="form-control">
+                {% if form.password.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <i class="fa fa-warning" aria-hidden="true"></i>
+                    <span class="sr-only">Error:</span>
+                     {% for error in form.password.errors %}
+                         {{ error }}<br>
+                     {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+               <a href="{% url 'registration:reset_password' %}">Forgotten password?</a>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg pull-right hidden-xs">Log In <i class="fa fa-angle-double-right"></i></button>
+                <button type="submit" class="btn btn-primary btn-lg btn-block visible-xs">Log In <i class="fa fa-angle-double-right"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block ga_track_custom_var %}
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            _gaq.push(['_trackEvent', 'form_error_login', '{{ error|escapejs }}']);
+        {% endfor %}
+    {% endif %}
+
+    {% if form.email_address.errors %}
+        {% for error in form.email_address.errors %}
+            _gaq.push(['_trackEvent', 'form_error_email_address', '{{ error|escapejs }}']);
+        {% endfor %}
+    {% endif %}
+
+    {% if form.password.errors %}
+        {% for error in form.password.errors %}
+            _gaq.push(['_trackEvent', 'form_error_password', '{{ error|escapejs }}']);
+        {% endfor %}
+    {% endif %}
+{% endblock %}

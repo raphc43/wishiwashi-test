@@ -1,0 +1,18 @@
+{% extends "emails/base.html" %}
+
+{% load add_one_hour %}
+{% load email_fonts %}
+{% load humanize %}
+{% load postcodes %}
+
+{% block main_content %}
+    Hello,
+    <br />
+    <br />
+    Please find the orders for you to pick up and/or drop off attached.
+
+    <br />
+    <br />
+    All the best,<br/>
+    Wishi Washi
+{% endblock %}

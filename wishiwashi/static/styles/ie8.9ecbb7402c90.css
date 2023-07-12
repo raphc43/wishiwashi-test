@@ -1,0 +1,30 @@
+header, nav, section, article, aside, footer {
+   display: block;
+}
+
+.col-sm-offset-1 {
+    margin-left: 8.33333333% !important;
+}
+
+.col-sm-offset-3 {
+    margin-left: 25% !important;
+}
+
+.item-price {
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #00b8d8 !important;
+}
+
+footer.desktop {
+    position: relative !important;
+}
+
+#desktop #frosted-glass {
+    background: url("../images/60-percent-overlay.e910d0af0622.png") !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#00FFFFFF, endColorstr=#00FFFFFF);
+}
+
+.progress-wrapper {
+    display: none;
+}

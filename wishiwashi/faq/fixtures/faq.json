@@ -1,0 +1,520 @@
+[
+{
+    "fields": {
+        "name": "General",
+        "order_priority": 1.0
+    },
+    "model": "faq.faqcatagory",
+    "pk": 1
+},
+{
+    "fields": {
+        "name": "Ordering",
+        "order_priority": 2.0
+    },
+    "model": "faq.faqcatagory",
+    "pk": 2
+},
+{
+    "fields": {
+        "name": "Items to be cleaned",
+        "order_priority": 3.0
+    },
+    "model": "faq.faqcatagory",
+    "pk": 3
+},
+{
+    "fields": {
+        "name": "Payment",
+        "order_priority": 4.0
+    },
+    "model": "faq.faqcatagory",
+    "pk": 4
+},
+{
+    "fields": {
+        "name": "Cleaning",
+        "order_priority": 5.0
+    },
+    "model": "faq.faqcatagory",
+    "pk": 5
+},
+{
+    "fields": {
+        "name": "Complaints",
+        "order_priority": 6.0
+    },
+    "model": "faq.faqcatagory",
+    "pk": 6
+},
+{
+    "fields": {
+        "name": "Contacting Us",
+        "order_priority": 7.0
+    },
+    "model": "faq.faqcatagory",
+    "pk": 7
+},
+{
+    "fields": {
+        "category": 1,
+        "answer": "A dry-cleaning machine is similar to a combination of a domestic washing machine, and clothes dryer...it just much bigger. Garments are placed into a washing/extraction chamber (referred to as the basket, or drum), which is the core of the machine. The washing chamber can hold a number of garments which will be similar in colour and texture.\r\n\r\nDuring the wash cycle, the drum is partly filled with solvent and begins to rotate, agitating the clothing. Delicate items are processed at low temperatures and reduced agitation. Once the process is complete, the drum will spin-out the solvent into a filtering and distilling chamber, and the drying process will commence on your clothes. Water is not used in the process, hence the name 'dry cleaning' . The lack of water also protects your clothes from shrinkage.",
+        "question": "What is dry cleaning?",
+        "order_priority": 1.0,
+        "slug": "what-is-dry-cleaning"
+    },
+    "model": "faq.questionanswer",
+    "pk": 1
+},
+{
+    "fields": {
+        "category": 1,
+        "answer": "Yes we are. We have had over 20 years of hands on cleaning, hand finishing and technical experience in the industry, so we understand clients needs and textiles. All our associate dry cleaners have been inspected and vetted to ensure they meet our high standards. Our team have owned stores in London and cleaned garments for designer fashion houses and Harrods. We do understand garment cleaning.",
+        "question": "Are you experienced dry cleaners?",
+        "order_priority": 1.0,
+        "slug": "are-you-experienced-dry-cleaners"
+    },
+    "model": "faq.questionanswer",
+    "pk": 2
+},
+{
+    "fields": {
+        "category": 2,
+        "answer": "Place your order through our 'simple to use' 5 step process on our website, and have your garments ready for collection in the selected one hour time slot. You will receive an order confirmation via email and notification via email one hour before pick up that our driver is on the way. Our drivers will bring a bag to place your garments in.",
+        "question": "How do I place my order?",
+        "order_priority": 0.1,
+        "slug": "how-do-i-place-my-order"
+    },
+    "model": "faq.questionanswer",
+    "pk": 3
+},
+{
+    "fields": {
+        "category": 2,
+        "answer": "No, but there is a pick up and delivery charge for orders less than \u00a315.",
+        "question": "Is there a minimum amount for an order?",
+        "order_priority": 1.0,
+        "slug": "is-there-a-minimum-amount-for-an-order"
+    },
+    "model": "faq.questionanswer",
+    "pk": 4
+},
+{
+    "fields": {
+        "category": 2,
+        "answer": "We have our drivers available on weekdays from 8am till 10pm and on Saturdays from 8am till 5pm. We are currently closed on Sundays.",
+        "question": "When can you pick-up and collect my order?",
+        "order_priority": 1.0,
+        "slug": "when-can-you-pick-up-and-collect-my-order"
+    },
+    "model": "faq.questionanswer",
+    "pk": 5
+},
+{
+    "fields": {
+        "category": 2,
+        "answer": "Yes, please contact customer services on `+44 (0)20 7228 1870 <tel:00442072281870>`_ to cancel your order.",
+        "question": "Can I cancel my order?",
+        "order_priority": 1.0,
+        "slug": "can-i-cancel-my-order"
+    },
+    "model": "faq.questionanswer",
+    "pk": 6
+},
+{
+    "fields": {
+        "category": 2,
+        "answer": "We are an internet based ordering facility, however we do have a friendly Customer Service team who you can call, and they will walk you through the simple process.",
+        "question": "Can I place an order via phone or email?",
+        "order_priority": 1.0,
+        "slug": "can-i-place-an-order-via-phone-or-email"
+    },
+    "model": "faq.questionanswer",
+    "pk": 7
+},
+{
+    "fields": {
+        "category": 2,
+        "answer": "Not at all, there's a simple booking slot process, followed by item selection, and personal detail and payment registration. It should only take 5 minutes on your first order... then it's really easy on subsequent orders.",
+        "question": "Does it take a long time to place an order?",
+        "order_priority": 1.0,
+        "slug": "does-it-take-a-long-time-to-place-an-order"
+    },
+    "model": "faq.questionanswer",
+    "pk": 8
+},
+{
+    "fields": {
+        "category": 2,
+        "answer": "Yes, please call customer service immediately on `+44 (0)20 7228 1870 <tel:00442072281870>`_ and we will assist you. If outside office hours, please email us help@wishiwashi.com.",
+        "question": "Can I reschedule my pick up or delivery time?",
+        "order_priority": 1.0,
+        "slug": "can-i-reschedule-my-pick-up-or-delivery-time"
+    },
+    "model": "faq.questionanswer",
+    "pk": 9
+},
+{
+    "fields": {
+        "category": 2,
+        "answer": "Currently pick up and delivery needs to be at the same location.",
+        "question": "Can I schedule pick up and delivery at different locations?",
+        "order_priority": 1.0,
+        "slug": "can-i-schedule-pick-up-and-delivery-at-different-locations"
+    },
+    "model": "faq.questionanswer",
+    "pk": 10
+},
+{
+    "fields": {
+        "category": 2,
+        "answer": "Please contact customer customer `+44 (0)20 7228 1870 <tel:00442072281870>`_ for assistance. If outside office hours, please email us help@wishiwashi.com.",
+        "question": "I missed my scheduled pick up and/or delivery time, what happens?",
+        "order_priority": 1.0,
+        "slug": "i-missed-my-scheduled-pick-up-andor-delivery-time-what-happens"
+    },
+    "model": "faq.questionanswer",
+    "pk": 11
+},
+{
+    "fields": {
+        "category": 2,
+        "answer": "We currently operate in two London postcodes ares: W and SW. We will be expanding our business in 2015 throughout more parts of London.",
+        "question": "What areas do you cover?",
+        "order_priority": 1.0,
+        "slug": "what-areas-do-you-cover"
+    },
+    "model": "faq.questionanswer",
+    "pk": 12
+},
+{
+    "fields": {
+        "category": 2,
+        "answer": "No problem. We double check everything and if there is a discrepancy, we will contact you.",
+        "question": "What if I have miscounted the items?",
+        "order_priority": 1.0,
+        "slug": "what-if-i-have-miscounted-the-items"
+    },
+    "model": "faq.questionanswer",
+    "pk": 13
+},
+{
+    "fields": {
+        "category": 2,
+        "answer": "Sorry, it is because we are busy at those time slots. Please choose another available time.",
+        "question": "Why is my collection/delivery slot grayed out?",
+        "order_priority": 1.0,
+        "slug": "why-is-my-collectiondelivery-slot-grayed-out"
+    },
+    "model": "faq.questionanswer",
+    "pk": 14
+},
+{
+    "fields": {
+        "category": 2,
+        "answer": "You can view your order by signing in and viewing your order details.",
+        "question": "Where can I find my order history?",
+        "order_priority": 1.0,
+        "slug": "where-can-i-find-my-order-history"
+    },
+    "model": "faq.questionanswer",
+    "pk": 15
+},
+{
+    "fields": {
+        "category": 2,
+        "answer": "Please refer to the prices on our website.",
+        "question": "What's your pricing?",
+        "order_priority": 1.0,
+        "slug": "whats-your-pricing"
+    },
+    "model": "faq.questionanswer",
+    "pk": 16
+},
+{
+    "fields": {
+        "category": 2,
+        "answer": "Yes, of course. Please reuse your bag so that you can place your dry cleaning and laundry in it, and all you have to do is give it to our driver.",
+        "question": "Do I get to keep the Wishi Washi bag?",
+        "order_priority": 1.0,
+        "slug": "do-i-get-to-keep-the-wishi-washi-bag"
+    },
+    "model": "faq.questionanswer",
+    "pk": 17
+},
+{
+    "fields": {
+        "category": 3,
+        "answer": "If the garment has a care label, it usually can be dry cleaned or laundered. There are some brands where garments are manufactured without the facility to be cleaned.",
+        "question": "Do you clean any garment?",
+        "order_priority": 1.0,
+        "slug": "do-you-clean-any-garment"
+    },
+    "model": "faq.questionanswer",
+    "pk": 18
+},
+{
+    "fields": {
+        "category": 3,
+        "answer": "Items which have been exposed to prior damage, distortion or colour loss may not be cleaned. You will be contacted in this circumstance.",
+        "question": "Can my garments be refused cleaning?",
+        "order_priority": 1.0,
+        "slug": "can-my-garments-be-refused-cleaning"
+    },
+    "model": "faq.questionanswer",
+    "pk": 19
+},
+{
+    "fields": {
+        "category": 3,
+        "answer": "We are highly experienced at understanding and handling high net worth items, silks, extra fine fabrics, beaded items, sequins and hand wash only garments. Specific instructions on garment care labels, such as Greenearth and Hydrocarbon cleaning are accepted.",
+        "question": "Can you process very delicate items?",
+        "order_priority": 1.0,
+        "slug": "can-you-process-very-delicate-items"
+    },
+    "model": "faq.questionanswer",
+    "pk": 20
+},
+{
+    "fields": {
+        "category": 3,
+        "answer": "Most stains can be removed, however if our technicians believe that the fabric is at risk from stain removal treatment, we may refer the matter back to you and ask for consent to proceed. There are some situations where stains cannot be removed.",
+        "question": "Can you remove the stain on my items?",
+        "order_priority": 1.0,
+        "slug": "can-you-remove-the-stain-on-my-items"
+    },
+    "model": "faq.questionanswer",
+    "pk": 21
+},
+{
+    "fields": {
+        "category": 3,
+        "answer": "Let us do all of that work for you.",
+        "question": "Do I need to separate my dry cleaning and laundry into colours and whites?",
+        "order_priority": 1.0,
+        "slug": "do-i-need-to-separate-my-dry-cleaning-and-laundry-into-colours-and-whites"
+    },
+    "model": "faq.questionanswer",
+    "pk": 22
+},
+{
+    "fields": {
+        "category": 3,
+        "answer": "Select the category that best suits and we will check the order for you. If we need to make a change or alter a price, we will contact you prior to cleaning.",
+        "question": "What if I can't find my item on your listing?",
+        "order_priority": 1.0,
+        "slug": "what-if-i-cant-find-my-item-on-your-listing"
+    },
+    "model": "faq.questionanswer",
+    "pk": 23
+},
+{
+    "fields": {
+        "category": 3,
+        "answer": "We will always double check this for you, but for peace of mind! please check the garment's care label for how to best clean the garment. This will assist in correct pricing and preventing any adjustments to the order.",
+        "question": "Which items should be dry cleaned and which should be laundered?",
+        "order_priority": 1.0,
+        "slug": "which-items-should-be-dry-cleaned-and-which-should-be-laundered"
+    },
+    "model": "faq.questionanswer",
+    "pk": 24
+},
+{
+    "fields": {
+        "category": 3,
+        "answer": "Leave it to our experienced team members to sort and check this for you. If there is a discrepancy, we will contact you.",
+        "question": "I don't know how some items should be cleaned, what do I do?",
+        "order_priority": 1.0,
+        "slug": "i-dont-know-how-some-items-should-be-cleaned-what-do-i-do"
+    },
+    "model": "faq.questionanswer",
+    "pk": 25
+},
+{
+    "fields": {
+        "category": 4,
+        "answer": "We accept Visa, MasterCard and American Express cards.",
+        "question": "What are the methods of payment?",
+        "order_priority": 1.0,
+        "slug": "what-are-the-methods-of-payment"
+    },
+    "model": "faq.questionanswer",
+    "pk": 26
+},
+{
+    "fields": {
+        "category": 4,
+        "answer": "We utilise `Stripe <https://stripe.com/gb>`_ for processing payments and all sensitive information is encrypted using SSL, the industry standard, before being transmitted. Our servers do not store your card details. Please see https://stripe.com/help/security for more details.",
+        "question": "How are my card details transmitted and stored?",
+        "order_priority": 1.0,
+        "slug": "how-are-my-card-details-transmitted-and-stored"
+    },
+    "model": "faq.questionanswer",
+    "pk": 27
+},
+{
+    "fields": {
+        "category": 4,
+        "answer": "Please see `Stripe's terms of service <https://stripe.com/gb/terms#tos>`_ for more details about their payment system and security measures.",
+        "question": "How safe is Stripe?",
+        "order_priority": 1.0,
+        "slug": "how-safe-is-stripe"
+    },
+    "model": "faq.questionanswer",
+    "pk": 28
+},
+{
+    "fields": {
+        "category": 4,
+        "answer": "We currently use `Stripe <https://stripe.com/gb>`_ for credit/debit card processing per transaction, rather than creating customer accounts through Stripe. If your transaction is not charged after pick up, it will simply expire and remain uncharged.",
+        "question": "Can I remove my payment details from Stripe?",
+        "order_priority": 1.0,
+        "slug": "can-i-remove-my-payment-details-from-stripe"
+    },
+    "model": "faq.questionanswer",
+    "pk": 29
+},
+{
+    "fields": {
+        "category": 4,
+        "answer": "Once your ordered has been processed, your card will be charged.",
+        "question": "When will my card be charged?",
+        "order_priority": 1.0,
+        "slug": "when-will-my-card-be-charged"
+    },
+    "model": "faq.questionanswer",
+    "pk": 30
+},
+{
+    "fields": {
+        "category": 4,
+        "answer": "On the payments page, please enter your discount code to apply your discount.",
+        "question": "Where do I input the discount code?",
+        "order_priority": 1.0,
+        "slug": "where-do-i-input-the-discount-code"
+    },
+    "model": "faq.questionanswer",
+    "pk": 31
+},
+{
+    "fields": {
+        "category": 5,
+        "answer": "Our own team will process your garments otherwise it will be taken to one of our approved dry cleaning partners. All associate businesses have been inspected by us and meet the high quality levels expected.",
+        "question": "Where do you take the laundry and dry cleaning to?",
+        "order_priority": 1.0,
+        "slug": "where-do-you-take-the-laundry-and-dry-cleaning-to"
+    },
+    "model": "faq.questionanswer",
+    "pk": 32
+},
+{
+    "fields": {
+        "category": 5,
+        "answer": "We follow the guidelines as set out in the garment care label. Typically delicates at 30 degrees, work shirts at 40 degrees and bed linen up to 60 degrees.",
+        "question": "What temperature do you wash shirts and laundry?",
+        "order_priority": 1.0,
+        "slug": "what-temperature-do-you-wash-shirts-and-laundry"
+    },
+    "model": "faq.questionanswer",
+    "pk": 33
+},
+{
+    "fields": {
+        "category": 5,
+        "answer": "Dry cleaners and laundry specialists cannot claim to be totally Eco friendly due to the nature of utilities used and requirements to obtain best results. However, we and all our partners are looking to reduce the impact of the process on the environment. We have a variety of dry cleaning methods of which some incorporate safer chemicals which are less harmful to the environment, and our laundry processes aim to process items at the lowest possible temperature with the most soil removing effect. Laundry detergent products are mainly Bio, however please call our customer service if you have specific requests.",
+        "question": "Do you use any Eco-friendly detergents in dry cleaning or laundry?",
+        "order_priority": 1.0,
+        "slug": "do-you-use-any-eco-friendly-detergents-in-dry-cleaning-or-laundry"
+    },
+    "model": "faq.questionanswer",
+    "pk": 34
+},
+{
+    "fields": {
+        "category": 5,
+        "answer": "Our turn around time is a minimum of 48 hours. This gives us time to ensure the highest quality service is provided.",
+        "question": "How long does it take for you to clean my clothes?",
+        "order_priority": 1.0,
+        "slug": "how-long-does-it-take-for-you-to-clean-my-clothes"
+    },
+    "model": "faq.questionanswer",
+    "pk": 35
+},
+{
+    "fields": {
+        "category": 6,
+        "answer": "This is exceptionally rare, as we have highly skilled technicians, but in the event this happens, we will investigate the issue promptly and establish the cause if the damage. If we are at fault, we are fully insured, and will look to replace or financially compensate for the goods. Our `Terms and Conditions </terms/>`_ will clarify the full process.",
+        "question": "What if my garment is damaged in the process?",
+        "order_priority": 1.0,
+        "slug": "what-if-my-garment-is-damaged-in-the-process"
+    },
+    "model": "faq.questionanswer",
+    "pk": 36
+},
+{
+    "fields": {
+        "category": 6,
+        "answer": "A rare incident, however we will endeavour to locate the item as soon as possible and return it to you. In the event that the item was mislaid, we are fully insured, and will look to replace or financially compensate for the goods. Our `Terms and Conditions </terms/>`_ clarify the process.",
+        "question": "What if you lose an item?",
+        "order_priority": 1.0,
+        "slug": "what-if-you-lose-an-item"
+    },
+    "model": "faq.questionanswer",
+    "pk": 37
+},
+{
+    "fields": {
+        "category": 6,
+        "answer": "Contact customer care via the phone or email on help@wishiwashi.com. All complaints are dealt with professionally and with the utmost importance.",
+        "question": "What if I need to make a complaint?",
+        "order_priority": 1.0,
+        "slug": "what-if-i-need-to-make-a-complaint"
+    },
+    "model": "faq.questionanswer",
+    "pk": 38
+},
+{
+    "fields": {
+        "category": 7,
+        "answer": "Monday - Friday 8am - 10pm. Saturday 8am - 5pm. Excluding public holidays.",
+        "question": "What are your customer service hours?",
+        "order_priority": 1.0,
+        "slug": "what-are-your-customer-service-hours"
+    },
+    "model": "faq.questionanswer",
+    "pk": 39
+},
+{
+    "fields": {
+        "category": 7,
+        "answer": "Contact customer care via the phone or email on `help@wishiwashi.com <mailto:help@wishiwashi.com>`_.",
+        "question": "I have a general enquiry, how can I contact the team?",
+        "order_priority": 1.0,
+        "slug": "i-have-a-general-enquiry-how-can-i-contact-the-team"
+    },
+    "model": "faq.questionanswer",
+    "pk": 40
+},
+{
+    "fields": {
+        "category": 2,
+        "answer": "If your order is less than \u00a315 there is a delivery charge of \u00a33.95, otherwise pick up and delivery is free.",
+        "question": "Is there a pick up and delivery charge?",
+        "order_priority": 0.2,
+        "slug": "is-there-a-pick-up-and-delivery-charge"
+    },
+    "model": "faq.questionanswer",
+    "pk": 41
+},
+{
+    "fields": {
+        "category": 1,
+        "answer": "We offer the following services: Dry cleaning, shirt laundering, laundering and an ironing only service.",
+        "question": "What services do you offer?",
+        "order_priority": 0.1,
+        "slug": "what-services-do-you-offer"
+    },
+    "model": "faq.questionanswer",
+    "pk": 42
+}
+]

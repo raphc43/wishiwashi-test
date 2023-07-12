@@ -1,0 +1,23 @@
+{% load add_one_hour %}
+{% load email_fonts %}
+{% load humanize %}
+{% load postcodes %}
+
+Hello,
+
+There is a new order available:
+
+Order # {{ order.uuid|upper }}
+
+Retail value: £{{ order.total_price_of_order|floatformat:2|intcomma }}
+
+Postcode: {{ order.pick_up_and_delivery_address.postcode|format_postcode }}
+
+Pick up: {{ order.pick_up_time|date:'l jS F' }} between {{ order.pick_up_time|time:'gA' }} & {{ order.pick_up_time|add_one_hour|time:'gA' }}
+
+Delivery: {{ order.drop_off_time|date:'l jS F' }} between {{ order.drop_off_time|time:'gA' }} & {{ order.drop_off_time|add_one_hour|time:'gA' }}
+
+https://{{DOMAIN}}{% url 'vendors:confirm_accept_order' order_pk=order.pk %}
+
+All the best,
+Wishi Washi

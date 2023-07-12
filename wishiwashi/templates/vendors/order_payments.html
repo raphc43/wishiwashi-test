@@ -1,0 +1,107 @@
+{% extends "vendors/base.html" %}
+
+{% load add_one_hour %}
+{% load humanize %}
+{% load postcodes %}
+{% load bootstrap3 %}
+{% block desktop_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Payments</h1>
+            {% if form.non_field_errors %}
+            <div class="row">
+                <div class="col-xs-12">
+                    {% if form.non_field_errors %}
+                        <p class="error">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="row">
+                <div class="col-xs-4 col-sm-offset-4">
+                    <form method="post" action="{% url 'vendors:order_payments' %}">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <input type="submit" class='large green' value="View payments">
+                    </form>
+                </div>
+            </div>
+            <br/>
+            <br/>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Ticket</th>
+                        <th>Placed</th>
+                        <th>Pieces</th>
+                        <th>Vendor</th>
+                        <th>Clean Only</th>
+                        <th class='number'>Order Value</th>
+                        <th class='number'>Order Value(ex VAT)</th>
+                        <th class='number'>Payment Due (ex VAT)</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% if not orders %}
+                        <tr class='no-orders-available'>
+                            <td colspan="9">There are no orders.</td>
+                        </tr>
+                    {% else %}
+                        {% for order in orders %}
+                        <tr data-order-id="{{ order.pk }}">
+                            <td><a href="{% url 'vendors:order' order.pk %}">{{ order.uuid }}</a></td>
+                            <td>{{ order.ticket_id }}</td>
+                            <td>{{ order.placed_time|date:'d M' }}</td>
+                            <td>{{ order.pieces }}</td>
+                            <td>{{ order.assigned_to_vendor }}</td>
+                            <td>{{ order.cleanonlyorder.assigned_to_vendor }}
+                                {% if order.cleanonlyorder.expectedbackcleanonlyorder %}
+                                <br>Expected: {{ order.cleanonlyorder.expectedbackcleanonlyorder.expected_back }}
+                                <br>Confirmed: {{ order.cleanonlyorder.expectedbackcleanonlyorder.confirmed_back|yesno }}
+                                {% endif %}
+                            </td>
+                            <td class='number'>&pound;{{order.total_price_of_order|floatformat:2|intcomma }}</td>
+                            <td class='number'>&pound;{{order.price_excluding_vat_charge|floatformat:2|intcomma }}</td>
+                            <td class='number'>&pound;{{order.orderpayments.total_amount|default:'0.00'|floatformat:2|intcomma }}</td>
+                        </tr>
+                        </form>
+                        {% endfor %}
+                        <tr>
+                            <td colspan="6" class="text-right"><strong>Total</strong></td>
+                            <td class='number'>&pound;{{ order_total }}</td>
+                            <td class='number'>&pound;{{ order_total_ex_vat }}</td>
+                            <td class='number'>&pound;{{ total }}</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+    </div>
+    </div>
+{% endblock %}
+
+{% block non_fixed_footer %}non-fixed{% endblock %}
+
+{% block mobile_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Only enabled for desktop</h1>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js_bottom %}
+$( document ).ready(function() {
+    $( "#id_start_date" ).datepicker({dateFormat: "dd-mm-yy"});
+    $( "#id_end_date" ).datepicker({dateFormat: "dd-mm-yy"});
+});
+{% endblock %}
+

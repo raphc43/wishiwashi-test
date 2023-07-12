@@ -1,0 +1,11 @@
+# Directions for robots.  See this URL:
+# http://www.robotstxt.org/
+# for a description of the file format.
+
+User-agent: HTTrack
+User-agent: puf
+User-agent: MSIECrawler
+Disallow: /
+
+User-agent: *
+Disallow:

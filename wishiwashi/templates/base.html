@@ -1,0 +1,47 @@
+{% load staticfiles %}{% load pipeline %}<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>{{ title|default:"Wishi Washi" }}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+        {% stylesheet 'main' %}{% block css_top %}{% endblock %}
+        <link rel="shortcut icon" href="{% static "images/favicon.ico" %}">
+        <link rel="apple-touch-icon" href="{% static "images/apple-touch-icon.png" %}">
+        <link rel="apple-touch-startup-image" href="{% static "images/apple-touch-startup-image.png" %}">
+        <link rel="manifest" href="/manifest.json">
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="Wishi Washi">
+        <meta property="og:locale" content="en_GB">
+        <meta property="og:title" content="{{ title|default:"Wishi Washi" }}">
+        <meta property="og:description" content="The only trusted, experienced online dry cleaning and shoe repair service to your door.">
+    </head>
+    <body>
+    {% include "snippets/nav.html" %}
+    {% block content %}{% endblock %}
+    {% include "snippets/footer.html" %}
+    <script>
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '{{GOOGLE_ANALYTICS_CODE}}']);
+        {% block ga_track_custom_var %}{% endblock %}
+        _gaq.push(['_setSiteSpeedSampleRate', 10]);
+        _gaq.push(['_trackPageview']);
+        {% block ga_track_transaction %}{% endblock %}
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    {% block js_bottom %}{% endblock %}
+    </body>
+</html>

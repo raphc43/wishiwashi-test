@@ -1,0 +1,45 @@
+{% extends "vendors/base.html" %}
+
+{% load static %}
+{% load pipeline %}
+
+{% block desktop_main %}
+    <div id="content"></div>
+
+{% endblock %}
+
+{% block non_fixed_footer %}non-fixed{% endblock %}
+
+{% block mobile_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Not supported on mobile</h1>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js_bottom_links %}
+    <script>
+    var DAYS = [{key: 0, display: "Mon"}, {key: 1, display: "Tue"}, 
+                {key: 2, display: "Wed"}, {key: 3, display: "Thu"}, 
+                {key: 4, display: "Fri"}, {key: 5, display: "Sat"}];
+
+    // hours of operation
+    var HOURS = [];
+    for(i=8; i<22; i++){
+        HOURS.push(i);
+    }
+
+    var URL = "{% url 'vendors:weekly_upcoming' %}?json=true";
+    var POLL_INTERVAL = 5000;
+    </script>
+
+    {% if DEBUG %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/JSXTransformer.js"></script>
+        <script type="text/jsx;harmony=true" src="{% static "jsx/calendar.jsx" %}"></script>
+    {% else %}
+        {% javascript 'calendar' %}
+    {% endif %}
+{% endblock %}
+
+

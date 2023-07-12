@@ -1,0 +1,147 @@
+{% load staticfiles %}{% load pipeline %}<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>{{ title|default:"Wishi Washi" }}</title>
+        <meta name="description" content="{{ description|default:"London’s delicate dry cleaning &amp; laundry service at your door step." }}">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+        <!--[if lt IE 9]>
+           <script src="assets/scripts/ie8.js"></script>
+           <link rel="stylesheet" href="assets/styles/ie8.css">
+        <![endif]-->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link href='//fonts.googleapis.com/css?family=Roboto:400,700,900' rel='stylesheet' type='text/css'>
+        {% stylesheet 'vendor' %}
+        <link rel="shortcut icon" href="{% static "images/favicon.ico" %}">
+        <link rel="apple-touch-icon" href="{% static "images/apple-touch-icon.png" %}">
+        <style>{% block css_top %}{% endblock %}</style>
+    </head>
+    <body>
+        <div id="desktop" class="container">
+            <div class="menu-trigger"></div>
+            {% include "snippets/vendors_nav.html" %}
+            <div class="row" id="logo-contact-wrapper">
+                <div id="logo-wrapper" class="col-md-4">
+                    <a href="{% url 'landing' %}"><img src="{% static "images/logo-364x85.png" %}" width="364" height="85" alt="Wishi Washi" /></a>
+                </div>
+                <div id="contact-wrapper" class="col-md-4">
+                    {% if not request.user.is_authenticated %}
+                        <a href="{% url 'bookings:login' %}" class='black'>Used Wishi Washi before? Please login.</a>
+                    {% else %}
+                        <a href="{% url 'bookings:logout' %}" class='black'>Logout</a>
+                    {% endif %}
+
+                    <address>
+                        <a href="tel:{{UK_PHONE_NUMBER_UGLY}}" class='black'>{{UK_PHONE_NUMBER}}</a>
+                    </address>
+                    <p class='black'>{{HOURS_OF_OPERATION}}</p>
+                </div>
+            </div>
+
+            {% block desktop_main %}{% endblock %}
+
+        </div>
+
+        <footer class="desktop {% block non_fixed_footer %}{% endblock %}">
+            <div class="container">
+                <div class="row">
+                    <div id="copyright-wrapper" class="col-xs-4 black">
+                        &copy; Wishi Washi 2014 - {% now "Y" %}
+                    </div>
+
+                    <div id="footer-links-wrapper" class="col-xs-8">
+                        <ul>
+                            {% if request.user.is_authenticated %}
+                                <li><a href="{% url 'bookings:logout' %}" class='black'>Logout</a></li>
+                            {% endif %}
+                            <li><a href="#" class='black'>FAQ</a></li>
+                            <li><a href="{% url 'privacy' %}" class='black'>Privacy Policy</a></li>
+                            <li><a href="{% url 'terms' %}" class='black'>Terms of Service</a></li>
+                            <li><a href="#" class='black'>About Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <div id="mobile">
+            <div class="menu-trigger"></div>
+
+            {% include "snippets/vendors_nav.html" %}
+
+            <div id="logo-container">
+                <a href="{% url 'landing' %}"><img src="{% static "images/logo-243x57.png" %}" width="243" height="57" alt="Wishi Washi" /></a>
+            </div>
+
+            <div class="container">
+                {% block mobile_main %}{% endblock %}
+            </div>
+
+            <div id="contact-details-wrapper">
+                <address>
+                    <a href="tel:{{UK_PHONE_NUMBER_UGLY}}">{{UK_PHONE_NUMBER}}</a>
+                </address>
+                <p>{{HOURS_OF_OPERATION}}</p>
+            </div>
+
+            <div id="footer-links-wrapper">
+
+                <ul id="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="{% url 'privacy' %}">Privacy</a></li>
+                    <li><a href="{% url 'terms' %}">T&amp;Cs</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'bookings:logout' %}">Logout</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-browser/0.0.7/jquery.browser.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/react.js"></script>
+        <script src="{% static "scripts/global.js" %}"></script>
+        <script>
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', '{{GOOGLE_ANALYTICS_CODE}}']);
+            {% block ga_track_custom_var %}
+            {% endblock %}
+            _gaq.push(['_setSiteSpeedSampleRate', 10]);
+            _gaq.push(['_trackPageview']);
+
+            {% block ga_track_transaction %}
+            {% endblock %}
+
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+        <!--[if IE 9]>
+            <script src="{% static "scripts/jquery.html5-placeholder-shim.js" %}"></script>
+            <script>
+                $(document.body).ready(function() {
+                    $.placeholder.shim();
+                });
+            </script>
+        <![endif]-->
+        <!--[if lt IE 9]>
+            <script src="{% static "scripts/respond.js" %}"></script>
+            <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <![endif]-->
+        {% block js_bottom_links %}{% endblock %}
+        <script>
+            {% block js_bottom %}
+            {% endblock %}
+        </script>
+    </body>
+</html>

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load postcodes %}
+
+{% block content %}
+<div class="container">
+    <div class="col-md-offset-2 col-md-8">
+        <h1>Sorry, we don't yet serve the {{out_code|upper|default:"[Postcode missing]"}} postcode area.</h1>
+        <p>We would like to notify you when we begin serving this area. Please provide us with your email address so we can do so:</p>
+        <form method="post" action="{% url 'bookings:postcode_not_served' %}?postcode={{postcode}}">
+            <input type="hidden" name="out_code" value="{{out_code|lower}}"/>
+            {% csrf_token %}
+            {% if form.out_code.errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-warning" aria-hidden="true"></i>
+                <span class="sr-only">Error:</span>
+                 {% for error in form.out_code.errors %}
+                     Error with your postcode: {{ error }}<br>
+                 {% endfor %}
+            </div>
+            {% endif %}
+            <div class="form-group{% if form.email_address.errors %} has-error{% endif %}">
+                <label for="email_address">Your Email Address</label>
+                <input type="email" id="email_address" name="email_address" placeholder="your.name@provider.com" value="{{form.email_address.value|default:''}}" class="form-control">
+                {% if form.email_address.errors %} 
+                <div class="alert alert-danger" role="alert">
+                    <i class="fa fa-warning" aria-hidden="true"></i>
+                    <span class="sr-only">Error:</span>
+                    {% for error in form.email_address.errors %}
+                        {{ error }}<br>
+                    {% endfor %} 
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg pull-right hidden-xs">Notify me <i class="fa fa-angle-double-right"></i></button>
+                <button type="submit" class="btn btn-primary btn-lg btn-block visible-xs">Notify me <i class="fa fa-angle-double-right"></i></button>
+            </div>
+        </form>
+        <p class="padding-top">If <strong>{{postcode|format_postcode|default:"[Postcode missing]"}}</strong> is not your postcode then please <a href="{% url 'landing' %}">click here</a> to use your correct postcode.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block ga_track_custom_var %}
+    _gaq.push(['_setCustomVar', 1, 'out_code', '{{out_code|lower}}', 1]);
+
+    {% if form.out_code.errors %}
+        {% for error in form.out_code.errors %}
+            _gaq.push(['_trackEvent', 'form_error_out_code', '{{ error|escapejs }}']);
+        {% endfor %}
+    {% endif %}
+
+    {% if form.email_address.errors %}
+        {% for error in form.email_address.errors %}
+            _gaq.push(['_trackEvent', 'form_error_email_address', '{{ error|escapejs }}']);
+        {% endfor %}
+    {% endif %}
+{% endblock %}

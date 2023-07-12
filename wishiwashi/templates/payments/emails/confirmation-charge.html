@@ -1,0 +1,72 @@
+{% extends "emails/base.html" %}
+
+{% load add_one_hour %}
+{% load email_fonts %}
+{% load humanize %}
+{% load postcodes %}
+
+{% block main_content %}
+    Hello {{ order.customer.first_name }} {{ order.customer.last_name }},
+    <br />
+    <br />
+    This is your receipt of payment against your credit card in the 
+    amount of: <strong>&pound;{{ order.total_price_of_order|floatformat:2 }}</strong>. Please note that charges will appear as "Wishi Washi Ltd" on your 
+    credit card's statement.
+    </p>
+    <h1>Order: {{ order.uuid }}</h1>
+    <p>Pick up and delivery address: <br />
+    {% include "snippets/address.html" with address=order.pick_up_and_delivery_address %}
+    </p>
+    <p>Pick up time: <strong>{{ order.pick_up_time|date:'l jS F' }} </strong>
+                between <strong>{{ order.pick_up_time|time:'gA' }} &amp; {{ order.pick_up_time|add_one_hour|time:'gA' }}</strong></p>
+
+    <p>Delivery date: <strong>{{ order.drop_off_time|date:'l jS F' }}</strong>
+                between <strong>{{ order.drop_off_time|time:'gA' }} &amp; {{ order.drop_off_time|add_one_hour|time:'gA' }}</strong></p>
+
+    <p><strong>Items to clean:</strong></p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for items in order.items.all %}
+            <tr>
+                <td>{{ items.item.name }}</td>
+                <td>{{ items.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            {% if order.voucher %}
+            <tr>
+                <td>Voucher</td>
+                <td>{{ order.voucher.voucher_code }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td>Pick up and delivery</td>
+                <td>&pound;{{ order.transportation_charge|floatformat:2 }}</td>
+            </tr>
+            <tr>
+                <td>Total Before VAT</td>
+                <td>&pound;{{ order.price_excluding_vat_charge|floatformat:2 }}</td>
+            </tr>
+            <tr>
+                <td>VAT</td>
+                <td>&pound;{{ order.vat_charge|floatformat:2 }}</td>
+            </tr>
+            <tr>
+                <td>Grand Total</td>
+                <td>&pound;{{ order.total_price_of_order|floatformat:2 }}</td>
+            </tr>
+        </tfoot>
+    </table>
+    <p>
+        We hope to see you again soon,<br />
+        Wishi Washi
+    </p>
+{% endblock %}

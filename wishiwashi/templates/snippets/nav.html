@@ -1,0 +1,33 @@
+{% load staticfiles %}
+<header class="hidden-print">
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <p id="total_items" style="background-image: url({% static "images/bag-bg.png" %})" class="navbar-text navbar-right pull-right">
+                <a title="Total items" href="{% url 'bookings:items_added' %}">{{ TOTAL_ITEMS }}</a>
+            </p>
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" title="Home" href="/">
+                    <p class="logo">
+                        <img class="wishi-washi-logo" src="{% static "images/logo-and-title-147x36.png"%}" alt="Wishi Washi Logo" width="147" height="36">
+                    </p>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="tel:{{UK_PHONE_NUMBER_UGLY}}"><i class="fa fa-phone fa-lg"></i> {{UK_PHONE_NUMBER}}</a></li>
+                    <li><a href="{% url 'bookings:prices' %}">Pricing</a></li>
+                    <li><a href="{% url 'areas' %}">Areas</a></li>
+                    {% if not request.user.is_authenticated %}
+                        <li><a href="{% url 'bookings:login' %}">Log in</a></li>
+                    {% else %}
+                        <li><a href="{% url 'bookings:orders' %}">Orders</a></li>
+                        <li><a href="{% url 'bookings:logout' %}">Logout</a></li>
+                    {% endif %}
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container -->
+</nav>
+</header>

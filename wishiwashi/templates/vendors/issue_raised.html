@@ -1,0 +1,30 @@
+{% extends "vendors/base.html" %}
+
+{% load add_one_hour %}
+{% load humanize %}
+{% load phone_numbers %}
+{% load postcodes %}
+
+{% block desktop_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Issue raised for order: {{ order.uuid|upper }}</h1>
+
+            <p>Please contact customer service on <a href="tel:{{UK_PHONE_NUMBER_UGLY}}">{{UK_PHONE_NUMBER}}</a>.</p>
+
+            <p><a href="{% url 'vendors:order' order.pk %}">View order again</a>.</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block mobile_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Issue raised for order: {{ order.uuid|upper }}</h1>
+
+            <p>Please contact customer service on <a href="tel:{{UK_PHONE_NUMBER_UGLY}}">{{UK_PHONE_NUMBER}}</a>.</p>
+
+            <p><a href="{% url 'vendors:order' order.pk %}">View order again</a>.</p>
+        </div>
+    </div>
+{% endblock %}

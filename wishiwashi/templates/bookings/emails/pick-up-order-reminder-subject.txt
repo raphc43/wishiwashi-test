@@ -1,0 +1,1 @@
+Your Wishi Washi order #{{ uuid }} is due to be picked up today

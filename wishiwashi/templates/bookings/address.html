@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% load postcodes %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="hidden-xs text-center">
+            {{progress.0|safe}}
+        </div>
+        <div class="visible-xs text-center">
+            {{progress.1|safe}}
+        </div>
+        <!--[if lt IE 9]>
+            <div class="col-xs-12">
+                <h1>Your collection &amp; delivery address</h1>
+            </div>
+        <![endif]-->
+    </div>
+    <div class="row padding-top-sm">
+        <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
+            <form method="post" action="{% url 'bookings:address' %}">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger" role="alert">
+                    <i class="fa fa-warning" aria-hidden="true"></i>
+                    <span class="sr-only">Error:</span>
+                     {% for error in form.non_field_errors %}
+                         {{ error }}<br>
+                     {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-sm-offset-6 col-md-offset-6 form-group">
+                        <button type="submit" class="btn btn-primary btn-lg pull-right hidden-xs">Proceed <i class="fa fa-angle-double-right"></i></button>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block visible-xs">Proceed <i class="fa fa-angle-double-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 form-group{% if form.first_name.errors %} has-error{% endif %}">
+                        <label for="first_name">{{form.first_name.label}}</label>
+                        <input type="text" required name="first_name" id="first_name" value="{{form.first_name.value|default:''}}" class="form-control">
+                        {% if form.first_name.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fa fa-warning" aria-hidden="true"></i>
+                            <span class="sr-only">Error:</span>
+                             {% for error in form.first_name.errors %}
+                                 {{ error }}<br>
+                             {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 form-group{% if form.last_name.errors %} has-error{% endif %}">
+                        <label for="last_name">{{form.last_name.label}}</label>
+                        <input type="text" required name="last_name" id="last_name" value="{{form.last_name.value|default:''}}" class="form-control">
+                        {% if form.last_name.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fa fa-warning" aria-hidden="true"></i>
+                            <span class="sr-only">Error:</span>
+                             {% for error in form.last_name.errors %}
+                                 {{ error }}<br>
+                             {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 form-group{% if form.flat_number_house_number_building_name.errors %} has-error{% endif %}">
+                        <label for="flat_number_house_number_building_name">{{form.flat_number_house_number_building_name.label}}</label>
+                        <input type="text" required name="flat_number_house_number_building_name" id="flat_number_house_number_building_name" value="{{form.flat_number_house_number_building_name.value|default:''}}" class="form-control">
+                        {% if form.flat_number_house_number_building_name.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fa fa-warning" aria-hidden="true"></i>
+                            <span class="sr-only">Error:</span>
+                             {% for error in form.flat_number_house_number_building_name.errors %}
+                                 {{ error }}<br>
+                             {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 form-group{% if form.address_line_1.errors %} has-error{% endif %}">
+                        <label for="address_line_1">{{form.address_line_1.label}}</label>
+                        <input type="text" required name="address_line_1" id="address_line_1" value="{{form.address_line_1.value|default:''}}" class="form-control">
+                        {% if form.address_line_1.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fa fa-warning" aria-hidden="true"></i>
+                            <span class="sr-only">Error:</span>
+                             {% for error in form.address_line_1.errors %}
+                                 {{ error }}<br>
+                             {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 form-group{% if form.address_line_2.errors %} has-error{% endif %}">
+                        <label for="address_line_2">{{form.address_line_2.label}}</label>
+                        <input type="text" name="address_line_2" id="address_line_2" value="{{form.address_line_2.value|default:''}}" class="form-control">
+                        {% if form.address_line_2.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fa fa-warning" aria-hidden="true"></i>
+                            <span class="sr-only">Error:</span>
+                             {% for error in form.address_line_2.errors %}
+                                 {{ error }}<br>
+                             {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 form-group{% if form.postcode.errors %} has-error{% endif %}">
+                        <label for="postcode">{{form.postcode.label}}</label>
+                        <input type="text" required name="postcode" id="postcode" value="{{form.postcode.value|default:''|format_postcode }}" class="form-control">
+                        {% if form.postcode.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fa fa-warning" aria-hidden="true"></i>
+                            <span class="sr-only">Error:</span>
+                             {% for error in form.postcode.errors %}
+                                 {{ error }}<br>
+                             {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-sm-offset-6 col-md-offset-6 form-group">
+                        <button type="submit" class="btn btn-primary btn-lg pull-right hidden-xs">Proceed <i class="fa fa-angle-double-right"></i></button>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block visible-xs">Proceed <i class="fa fa-angle-double-right"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row padding-top-sm">
+        <div class="col-xs-12 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
+            <p class="text-center">This is the address from which we will both pick up your items and deliver them back to you.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block ga_track_custom_var %}
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            _gaq.push(['_trackEvent', 'form_error_login', '{{ error|escapejs }}']);
+        {% endfor %}
+    {% endif %}
+
+    {% if form.first_name.errors %}
+        {% for error in form.first_name.errors %}
+            _gaq.push(['_trackEvent', 'form_error_first_name', '{{ error|escapejs }}']);
+        {% endfor %}
+    {% endif %}
+
+    {% if form.last_name.errors %}
+        {% for error in form.last_name.errors %}
+            _gaq.push(['_trackEvent', 'form_error_last_name', '{{ error|escapejs }}']);
+        {% endfor %}
+    {% endif %}
+
+    {% if form.flat_number_house_number_building_name.errors %}
+        {% for error in form.flat_number_house_number_building_name.errors %}
+            _gaq.push(['_trackEvent', 'form_error_flat_number_house_number_building_name', '{{ error|escapejs }}']);
+        {% endfor %}
+    {% endif %}
+
+    {% if form.address_line_1.errors %}
+        {% for error in form.address_line_1.errors %}
+            _gaq.push(['_trackEvent', 'form_error_address_line_1', '{{ error|escapejs }}']);
+        {% endfor %}
+    {% endif %}
+
+    {% if form.address_line_2.errors %}
+        {% for error in form.address_line_2.errors %}
+            _gaq.push(['_trackEvent', 'form_error_address_line_2', '{{ error|escapejs }}']);
+        {% endfor %}
+    {% endif %}
+
+    {% if form.postcode.errors %}
+        {% for error in form.postcode.errors %}
+            _gaq.push(['_trackEvent', 'form_error_postcode', '{{ error|escapejs }}']);
+        {% endfor %}
+    {% endif %}
+{% endblock %}

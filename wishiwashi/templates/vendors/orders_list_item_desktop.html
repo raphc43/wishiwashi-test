@@ -1,0 +1,18 @@
+{% load add_one_hour %}
+{% load humanize %}
+{% load postcodes %}
+
+<tr data-order-id="{{ order.pk }}">
+    {% if is_wishi_washi and not disable_throw_back %}
+        {% if order.can_throw_back %}
+            <td><input type="checkbox" name="order_{{ order.pk }}" /></td>
+        {% else%}
+            <td><input type="checkbox" disabled /></td>
+        {% endif %}
+    {% endif %}
+    <td>{{ order.pick_up_and_delivery_address.postcode|default:''|format_postcode }}</td>
+    <td>{{ order.pick_up_time|date:'l jS M gA' }} - {{ order.pick_up_time|add_one_hour|time:'gA' }}</td>
+    <td>{{ order.drop_off_time|date:'l jS M gA' }} - {{ order.drop_off_time|add_one_hour|time:'gA' }}</td>
+    <td class='number'>&pound;{{order.total_price_of_order|floatformat:2|intcomma }}</td>
+    <td><a href="{% url 'vendors:order' order.pk %}">View order</a></td>
+</tr>

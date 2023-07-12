@@ -1,0 +1,749 @@
+[{
+    "fields": {
+        "visible": true,
+        "order_priority": 1.0,
+        "name": "Skirts & Dresses",
+        "description": ""
+    },
+    "model": "bookings.category",
+    "pk": 1
+}, {
+    "fields": {
+        "visible": true,
+        "order_priority": 2.0,
+        "name": "Shirts & Blouses",
+        "description": ""
+    },
+    "model": "bookings.category",
+    "pk": 2
+}, {
+    "fields": {
+        "visible": true,
+        "order_priority": 3.0,
+        "name": "Suits & Trousers",
+        "description": ""
+    },
+    "model": "bookings.category",
+    "pk": 3
+}, {
+    "fields": {
+        "visible": true,
+        "order_priority": 8.0,
+        "name": "Bathroom",
+        "description": ""
+    },
+    "model": "bookings.category",
+    "pk": 4
+}, {
+    "fields": {
+        "visible": true,
+        "order_priority": 4.0,
+        "name": "Outdoor",
+        "description": ""
+    },
+    "model": "bookings.category",
+    "pk": 5
+}, {
+    "fields": {
+        "visible": true,
+        "order_priority": 5.0,
+        "name": "Knitwear",
+        "description": ""
+    },
+    "model": "bookings.category",
+    "pk": 6
+}, {
+    "fields": {
+        "visible": true,
+        "order_priority": 6.0,
+        "name": "Accessories",
+        "description": ""
+    },
+    "model": "bookings.category",
+    "pk": 7
+}, {
+    "fields": {
+        "visible": true,
+        "order_priority": 7.0,
+        "name": "Bedroom",
+        "description": ""
+    },
+    "model": "bookings.category",
+    "pk": 8
+}, {
+    "fields": {
+        "category": 1,
+        "name": "Dress silk long",
+        "vendor_friendly_name": "Dress silk long",
+        "price": 19.0,
+        "order_priority": 3.1,
+        "visible": true,
+        "image": "images/products/dress-silk-long.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 1
+}, {
+    "fields": {
+        "category": 2,
+        "name": "Shirt hanging",
+        "vendor_friendly_name": "Shirt hanging",
+        "price": 2.25,
+        "order_priority": 1.0,
+        "visible": true,
+        "image": "images/products/hung-shirt.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 2
+}, {
+    "fields": {
+        "category": 2,
+        "name": "Shirt folded",
+        "vendor_friendly_name": "Shirt folded",
+        "price": 2.75,
+        "order_priority": 2.0,
+        "visible": true,
+        "image": "images/products/folded-shirt.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 3
+}, {
+    "fields": {
+        "category": 2,
+        "name": "Dinner shirt",
+        "vendor_friendly_name": "Dinner shirt",
+        "price": 2.75,
+        "order_priority": 3.0,
+        "visible": true,
+        "image": "images/products/dinner-shirt.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 4
+}, {
+    "fields": {
+        "category": 2,
+        "name": "Silk shirt",
+        "vendor_friendly_name": "Silk shirt",
+        "price": 5.0,
+        "order_priority": 4.0,
+        "visible": true,
+        "image": "images/products/silk-shirt.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 5
+}, {
+    "fields": {
+        "category": 2,
+        "name": "Blouse plain",
+        "vendor_friendly_name": "Blouse plain",
+        "price": 3.75,
+        "order_priority": 5.0,
+        "visible": true,
+        "image": "images/products/blouse.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 6
+}, {
+    "fields": {
+        "category": 2,
+        "name": "Blouse silk",
+        "vendor_friendly_name": "Blouse silk",
+        "price": 5.0,
+        "order_priority": 6.0,
+        "visible": true,
+        "image": "images/products/silk-blouse.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 7
+}, {
+    "fields": {
+        "category": 3,
+        "name": "2 piece suit",
+        "vendor_friendly_name": "2 piece suit",
+        "price": 12.95,
+        "order_priority": 1.0,
+        "visible": true,
+        "image": "images/products/two-piece-suit.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 8
+}, {
+    "fields": {
+        "category": 3,
+        "name": "3 piece suit",
+        "vendor_friendly_name": "3 piece suit",
+        "price": 16.0,
+        "order_priority": 2.0,
+        "visible": true,
+        "image": "images/products/three-piece-suit.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 9
+}, {
+    "fields": {
+        "category": 3,
+        "name": "Dinner suit",
+        "vendor_friendly_name": "Dinner suit",
+        "price": 15.0,
+        "order_priority": 3.0,
+        "visible": true,
+        "image": "images/products/dinner-suit.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 10
+}, {
+    "fields": {
+        "category": 3,
+        "name": "Waistcoat",
+        "vendor_friendly_name": "Waistcoat",
+        "price": 5.5,
+        "order_priority": 4.0,
+        "visible": true,
+        "image": "images/products/waistcoat.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 11
+}, {
+    "fields": {
+        "category": 3,
+        "name": "Waistcoat silk",
+        "vendor_friendly_name": "Waistcoat silk",
+        "price": 6.5,
+        "order_priority": 4.1,
+        "visible": true,
+        "image": "images/products/waistcost-silk.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 43
+}, {
+    "fields": {
+        "category": 3,
+        "name": "Trouser",
+        "vendor_friendly_name": "Trouser",
+        "price": 7.0,
+        "order_priority": 5.0,
+        "visible": true,
+        "image": "images/products/trouser.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 12
+}, {
+    "fields": {
+        "category": 3,
+        "name": "Trouser with trim",
+        "vendor_friendly_name": "Trouser with trim",
+        "price": 8.5,
+        "order_priority": 5.1,
+        "visible": true,
+        "image": "images/products/trouser-with-trim.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 44
+}, {
+    "fields": {
+        "category": 3,
+        "name": "Trouser silk",
+        "vendor_friendly_name": "Trouser silk",
+        "price": 8.0,
+        "order_priority": 6.0,
+        "visible": true,
+        "image": "images/products/silk-trouser.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 13
+}, {
+    "fields": {
+        "category": 1,
+        "name": "Dress plain",
+        "vendor_friendly_name": "Dress plain",
+        "price": 10.95,
+        "order_priority": 1.0,
+        "visible": true,
+        "image": "images/products/dress.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 14
+}, {
+    "fields": {
+        "category": 1,
+        "name": "Dress with trim",
+        "vendor_friendly_name": "Dress with trim",
+        "price": 13.95,
+        "order_priority": 2.0,
+        "visible": true,
+        "image": "images/products/dress-trim.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 15
+}, {
+    "fields": {
+        "category": 1,
+        "name": "Dress silk",
+        "vendor_friendly_name": "Dress silk",
+        "price": 13.5,
+        "order_priority": 3.0,
+        "visible": true,
+        "image": "images/products/dress-silk.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 16
+}, {
+    "fields": {
+        "category": 1,
+        "name": "Skirt plain",
+        "vendor_friendly_name": "Skirt plain",
+        "price": 6.5,
+        "order_priority": 4.0,
+        "visible": true,
+        "image": "images/products/skirt.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 17
+}, {
+    "fields": {
+        "category": 1,
+        "name": "Skirt with trim",
+        "vendor_friendly_name": "Skirt with trim",
+        "price": 8.50,
+        "order_priority": 5.0,
+        "visible": true,
+        "image": "images/products/skirt-trim.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 18
+}, {
+    "fields": {
+        "category": 1,
+        "name": "Skirt silk",
+        "vendor_friendly_name": "Skirt silk",
+        "price": 7.5,
+        "order_priority": 6.0,
+        "visible": true,
+        "image": "images/products/skirt-silk.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 19
+}, {
+    "fields": {
+        "category": 5,
+        "name": "Jacket",
+        "vendor_friendly_name": "Jacket",
+        "price":8.0,
+        "order_priority": 1.0,
+        "visible": true,
+        "image": "images/products/jacket.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 20
+}, {
+    "fields": {
+        "category": 5,
+        "name": "Jacket with trim",
+        "vendor_friendly_name": "Jacket with trim",
+        "price": 10.0,
+        "order_priority": 2.0,
+        "visible": true,
+        "image": "images/products/jacket-trim.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 21
+}, {
+    "fields": {
+        "category": 5,
+        "name": "Overcoat short",
+        "vendor_friendly_name": "Overcoat short",
+        "price": 10.95,
+        "order_priority": 2.1,
+        "visible": true,
+        "image": "images/products/overcoat-short.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 45
+}, {
+    "fields": {
+        "category": 5,
+        "name": "Overcoat medium",
+        "vendor_friendly_name": "Overcoat medium",
+        "price": 13.95,
+        "order_priority": 2.2,
+        "visible": true,
+        "image": "images/products/overcoat-medium.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 46
+}, {
+    "fields": {
+        "category": 5,
+        "name": "Overcoat long",
+        "vendor_friendly_name": "Overcoat long",
+        "price": 16.0,
+        "order_priority": 2.3,
+        "visible": true,
+        "image": "images/products/overcoat-long.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 23
+}, {
+    "fields": {
+        "category": 5,
+        "name": "Padded/filled coat short",
+        "vendor_friendly_name": "Padded/filled coat short",
+        "price": 15.0,
+        "order_priority": 3.0,
+        "visible": true,
+        "image": "images/products/padded-coat-short.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 47
+}, {
+    "fields": {
+        "category": 5,
+        "name": "Padded/filled coat medium",
+        "vendor_friendly_name": "Padded/filled coat medium",
+        "price": 18.0,
+        "order_priority": 3.1,
+        "visible": true,
+        "image": "images/products/padded-coat-medium.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 48
+}, {
+    "fields": {
+        "category": 5,
+        "name": "Raincoat",
+        "vendor_friendly_name": "Raincoat",
+        "price": 13.95,
+        "order_priority": 4.0,
+        "visible": true,
+        "image": "images/products/raincoat.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 22
+}, {
+    "fields": {
+        "category": 5,
+        "name": "Raincoat with trim",
+        "vendor_friendly_name": "Raincoat with trim",
+        "price": 16.0,
+        "order_priority": 5.0,
+        "visible": true,
+        "image": "images/products/raincoat-with-trim.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 49
+}, {
+   "fields": {
+        "category": 6,
+        "name": "Knitwear light",
+        "vendor_friendly_name": "Knitwear light",
+        "price": 5.5,
+        "order_priority": 1.0,
+        "visible": true,
+        "image": "images/products/knitwear-light.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 24
+}, {
+    "fields": {
+        "category": 6,
+        "name": "Knitwear heavy",
+        "vendor_friendly_name": "Knitwear heavy",
+        "price": 6.5,
+        "order_priority": 2.0,
+        "visible": true,
+        "image": "images/products/knitwear-heavy.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 25
+}, {
+    "fields": {
+        "category": 6,
+        "name": "Knitwear with trim",
+        "vendor_friendly_name": "Knitwear with trim",
+        "price": 6.5,
+        "order_priority": 3.0,
+        "visible": true,
+        "image": "images/products/knitwear-with-trim.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 50
+}, {
+    "fields": {
+        "category": 7,
+        "name": "Tie",
+        "vendor_friendly_name": "Tie",
+        "price": 4.0,
+        "order_priority": 1.0,
+        "visible": true,
+        "image": "images/products/tie.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 26
+}, {
+    "fields": {
+        "category": 7,
+        "name": "Scarf plain",
+        "vendor_friendly_name": "Scarf plain",
+        "price": 4.0,
+        "order_priority": 2.0,
+        "visible": true,
+        "image": "images/products/scarf-plain.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 27
+}, {
+    "fields": {
+        "category": 7,
+        "name": "Scarf pashmina",
+        "vendor_friendly_name": "Scarf pashmina",
+        "price": 8.0,
+        "order_priority": 3.0,
+        "visible": true,
+        "image": "images/products/scarf-pashmina.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 51
+}, {
+    "fields": {
+        "category": 8,
+        "name": "Dressing gown cotton",
+        "vendor_friendly_name": "Dressing gown cotton",
+        "price": 4.0,
+        "order_priority": 1.0,
+        "visible": true,
+        "image": "images/products/dressing-gown.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 28
+}, {
+    "fields": {
+        "category": 8,
+        "name": "Dressing gown silk",
+        "vendor_friendly_name": "Dressing gown silk",
+        "price": 12.0,
+        "order_priority": 2.0,
+        "visible": true,
+        "image": "images/products/dressing-gown-silk.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 52
+}, {
+    "fields": {
+        "category": 4,
+        "name": "Bath towel",
+        "vendor_friendly_name": "Bath towel",
+        "price": 3.0,
+        "order_priority": 2.0,
+        "visible": true,
+        "image": "images/products/bath-towel.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 29
+}, {
+    "fields": {
+        "category": 4,
+        "name": "Hand towel",
+        "vendor_friendly_name": "Hand towel",
+        "price": 1.5,
+        "order_priority": 3.0,
+        "visible": true,
+        "image": "images/products/hand-towel.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 30
+}, {
+    "fields": {
+        "category": 4,
+        "name": "Bath mat",
+        "vendor_friendly_name": "Bath mat",
+        "price": 3.25,
+        "order_priority": 1.0,
+        "visible": true,
+        "image": "images/products/bath-mat.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 31
+}, {
+    "fields": {
+        "category": 8,
+        "name": "Pillowcase",
+        "vendor_friendly_name": "Pillowcase",
+        "price": 2.0,
+        "order_priority": 13.0,
+        "visible": true,
+        "image": "images/products/pillowcase.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 32
+}, {
+    "fields": {
+        "category": 8,
+        "name": "Single bed sheet",
+        "vendor_friendly_name": "Single bed sheet",
+        "price": 3.25,
+        "order_priority": 9.0,
+        "visible": true,
+        "image": "images/products/single-bed-sheet.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 33
+}, {
+    "fields": {
+        "category": 8,
+        "name": "Double bed sheet",
+        "vendor_friendly_name": "Double bed sheet",
+        "price": 3.75,
+        "order_priority": 3.0,
+        "visible": true,
+        "image": "images/products/double-bed-sheet.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 34
+}, {
+    "fields": {
+        "category": 8,
+        "name": "King bed sheet",
+        "vendor_friendly_name": "King bed sheet",
+        "price": 4.25,
+        "order_priority": 6.0,
+        "visible": true,
+        "image": "images/products/king-bed-sheet.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 35
+}, {
+    "fields": {
+        "category": 8,
+        "name": "Single duvet cover",
+        "vendor_friendly_name": "Single duvet cover",
+        "price": 5.75,
+        "order_priority": 11.0,
+        "visible": true,
+        "image": "images/products/single-duvet-cover.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 36
+}, {
+    "fields": {
+        "category": 8,
+        "name": "Double duvet cover",
+        "vendor_friendly_name": "Double duvet cover",
+        "price": 6.5,
+        "order_priority": 5.0 ,
+        "visible": true,
+        "image": "images/products/double-duvet-cover.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 37
+}, {
+    "fields": {
+        "category": 8,
+        "name": "King duvet cover",
+        "vendor_friendly_name": "King duvet cover",
+        "price": 7.0,
+        "order_priority": 8.0,
+        "visible": true,
+        "image": "images/products/king-duvet-cover.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 38
+}, {
+    "fields": {
+        "category": 8,
+        "name": "Pillow",
+        "vendor_friendly_name": "Pillow",
+        "price": 8.5,
+        "order_priority": 12.0,
+        "visible": true,
+        "image": "images/products/pillow.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 39
+}, {
+    "fields": {
+        "category": 8,
+        "name": "Single duvet",
+        "vendor_friendly_name": "Single duvet",
+        "price": 16.0,
+        "order_priority": 10.0,
+        "visible": true,
+        "image": "images/products/single-duvet.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 40
+}, {
+    "fields": {
+        "category": 8,
+        "name": "Double duvet",
+        "vendor_friendly_name": "Double duvet",
+        "price": 18.0,
+        "order_priority": 4.0,
+        "visible": true,
+        "image": "images/products/double-duvet.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 41
+}, {
+    "fields": {
+        "category": 8,
+        "name": "King duvet",
+        "vendor_friendly_name": "King duvet",
+        "price": 21.0,
+        "order_priority": 7.0,
+        "visible": true,
+        "image": "images/products/king-duvet.jpg",
+        "description": ""
+    },
+    "model": "bookings.item",
+    "pk": 42
+}]

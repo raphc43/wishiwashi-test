@@ -1,0 +1,17 @@
+{% load staticfiles %}
+<form action="{% url 'payments:charge' %}" method="POST">
+    {% csrf_token %}
+    <script
+    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    data-key="{{ publishable_key }}"
+    data-amount="{{ amount }}"
+    data-name="Wishi Washi"
+    data-description="Dry cleaning and laundry services",
+    data-panel-label="Amount due",
+    data-currency="gbp",
+    data-email="{{ request.user.email }}",
+    data-allow-remember-me="true",
+    data-label="Click here to pay by credit card"
+    data-image="{% static "images/stripe-logo.png" %}">
+    </script>
+</form>

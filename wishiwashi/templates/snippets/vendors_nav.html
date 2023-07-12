@@ -1,0 +1,27 @@
+<nav class="slide-menu">
+    <ul>
+        <li class="sep"><a href="{% url 'vendors:orders' %}">Available Orders</a></li>
+        <li><a href="{% url 'vendors:upcoming' %}">Upcoming</a></li>
+        <li><a href="{% url 'vendors:weekly_upcoming' %}">This week</a></li>
+        {% if WISHI_WASHI_USER %}
+            <li><a href="{% url 'vendors:expected_back_clean_only' %}">Expected back</a></li>
+        {% endif %}
+        <li><a href="{% url 'vendors:orders_to_pick_up' %}">Orders to pick up</a></li>
+        {% if WISHI_WASHI_USER %}
+            <li><a href="{% url 'vendors:orders_to_tag' %}">Orders to tag</a></li>
+        {% endif %}
+        <li><a href="{% url 'vendors:orders_to_drop_off' %}">Orders to drop off</a></li>
+        <li><a href="{% url 'vendors:order_history' %}">Order History</a></li>
+        {% if WISHI_WASHI_USER %}
+            <li><a href="{% url 'vendors:order_payments' %}">Payments</a></li>
+            <li><a href="{% url 'vendors:default_prices' %}">Default prices</a></li>
+            <li><a href="{% url 'customer_stats:stats' %}">Stats</a></li>
+        {% endif %}
+        <li class="sep"><a href="{% url 'vendors:postcodes_served' %}">Postcodes Served</a></li>
+        <li><a href="{% url 'vendors:operating_hours' %}">Operating Hours</a></li>
+        <li><a href="{% url 'vendors:contact_details_and_notifications' %}">Contact Details &amp; Notifications</a></li>
+        <li class="sep"><a href="{% url 'bookings:logout' %}">Logout</a></li>
+    </ul>
+</nav>
+
+

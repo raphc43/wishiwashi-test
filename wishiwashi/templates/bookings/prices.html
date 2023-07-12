@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-12">
+            <h1>Prices</h1>
+            {% for column in columns %}
+                <div class="col-md-4 col-xs-12">
+                <table class="table table-condensed">
+                    {% for item in column %}
+                        {% ifchanged item.category.name %}
+                        <thead>
+                            <tr>
+                                <th colspan="2">{{ item.category.name }}</th>
+                            </tr>
+                        </thead>
+                        {% endifchanged %}
+                        <tbody>
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td align="right">&pound;{{ item.price|floatformat:2|intcomma }}</td>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

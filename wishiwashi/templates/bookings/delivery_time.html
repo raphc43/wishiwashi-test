@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load postcodes %}
+{% load pipeline %}
+
+{% block content %}
+
+{% if messages %}
+    <div class="row padding-top-sm">
+        <div class="col-xs-12 col-md-10 col-md-offset-1">
+            {% if messages %}
+                <div class="alert alert-dnager" role="alert">
+                    <i class="fa fa-warning" aria-hidden="true"></i>
+                    {% for message in messages %}
+                         {{ message }}<br>
+                     {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+
+<form id="time_slot_form" method="post" action="{% url 'bookings:delivery_time' %}">
+{% csrf_token %}
+<input type="hidden" name="time_slot" value="">
+
+<!-- //start desktop-->
+<div id="desktop" class="container hidden-xs">
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+            <img src="{% static "images/check.png" %}" alt="" class="pre-load">
+            <div class="text-center">
+                {{progress.0|safe}}
+            </div>
+            <!--[if lt IE 9]>
+                <div class="row">
+                    <div class="col-xs-12 text-center">
+                        <h1>Collection time from {{request.session.postcode|format_postcode|default:"[Postcode missing]"}}</h1>
+                    </div>
+                </div>
+            <![endif]-->
+        </div>
+   </div>
+
+    <div class="row">
+        <div class="col-sm-8 col-md-8">
+            {% if form.non_field_errors or form.time_slot.errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-warning" aria-hidden="true"></i>
+                <span class="sr-only">Error:</span>
+                 {% for error in form.non_field_errors %}
+                     {{ error }}<br>
+                 {% endfor %}
+                 {% for error in form.time_slot.errors %}
+                     {{ error }}<br>
+                 {% endfor %}
+            </div>
+            {% else %}
+                <p>This time slot is the one-hour window in which we will aim to deliver your items. If <strong>{{request.session.postcode|format_postcode|default:"[Postcode missing]"}}</strong> is not your postcode then please <a href="{% url 'landing' %}">click here</a> to use your correct postcode.</p>
+            {% endif %}
+        </div>
+        <div class="form-group col-sm-4 col-md-4">
+           <button type="submit" class="btn btn-primary btn-lg pull-right">Proceed <i class="fa fa-angle-double-right"></i></button>
+       </div>
+   </div>
+
+    <div class="row">
+        <div class="col-md-1 col-sm-1">
+            <button id="desktop_previous" autocomplete="off" class="btn btn-info"><i class="fa fa-minus fa-2x"></i></button>
+        </div>
+        <div class="col-md-2 col-sm-2 calendar-month-label">&nbsp;</div>
+        <div class="col-md-2 col-sm-2 calendar-month-label">&nbsp;</div>
+        <div class="col-md-2 col-sm-2 calendar-month-label">&nbsp;</div>
+        <div class="col-md-2 col-sm-2 calendar-month-label">&nbsp;</div>
+        <div class="col-md-2 col-sm-2 calendar-month-label">&nbsp;</div>
+        <div class="col-md-1 col-sm-1">
+            <button id="desktop_next" autocomplete="off" class="btn btn-info pull-right"><i class="fa fa-plus fa-2x"></i></button>
+        </div>
+    </div>
+
+    <div class="row" id="date-labels-wrapper">
+        <p></p>
+    </div>
+
+    <div class="padding-top-sm"></div>
+
+    <div class="row">
+        <div class="form-group col-md-offset-8 col-sm-offset-8 col-sm-4 col-md-4">
+           <button type="submit" class="btn btn-primary btn-lg pull-right">Proceed <i class="fa fa-angle-double-right"></i></button>
+       </div>
+   </div>
+</div>
+<!-- //end desktop -->
+
+<!-- //start mobile -->
+<div id="mobile" class="container visible-xs">
+    <div class="row">
+        <img src="{% static "images/check.png" %}" alt="" class="pre-load" />
+        <div class="text-center">
+            {{progress.1|safe}}
+        </div>
+   </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            {% if form.non_field_errors or form.time_slot.errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-warning" aria-hidden="true"></i>
+                <span class="sr-only">Error:</span>
+                 {% for error in form.non_field_errors %}
+                     {{ error }}<br>
+                 {% endfor %}
+                 {% for error in form.time_slot.errors %}
+                     {{ error }}<br>
+                 {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+ 
+    <div class="row">
+        <div class="form-group col-xs-12">
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Proceed <i class="fa fa-angle-double-right"></i></button>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-xs-12 calendar-month-label">
+            &nbsp;
+        </div>
+    </div>
+
+    <div class="row arrow-and-day-name-wrapper">
+        <div class="col-xs-2">
+            <button id="mobile_previous" autocomplete="off" class="btn btn-info"><i class="fa fa-minus fa-2x"></i></button>
+        </div>
+
+        <div class="col-xs-8">
+            <div class="calendar-date-wrapper center-block">
+                &nbsp;
+            </div>
+        </div>
+
+        <div class="col-xs-2">
+            <button id="mobile_next" autocomplete="off" class="btn btn-info pull-right"><i class="fa fa-plus minus fa-2x"></i></button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-xs-12">
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Proceed <i class="fa fa-angle-double-right"></i></button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+            <p class="text-center">If <strong>{{request.session.postcode|format_postcode|default:"[Postcode missing]"}}</strong> is not your postcode then please <a href="{% url 'landing' %}">click here</a> to use your correct postcode.</p>
+        </div>
+    </div>
+</div>
+<!-- //end mobile -->
+</form>
+{% endblock %}
+
+{% block js_bottom %} 
+<script>
+var calendar_grid={{calendar_grid|safe}};
+var check_png="{% static "images/check.png"%}";
+var selected_day={{selected_day|default:0}};
+var selected_week={{selected_week|default:0}};
+{% if selected_date and selected_hour %}
+var selected_date="{{selected_date}}";
+var selected_hour="{{selected_hour}}";
+{% endif %}
+</script>
+{% javascript 'transit' %}
+{% endblock %}
+
+
+{% block ga_track_custom_var %}
+    _gaq.push(['_setCustomVar', 1, 'out_code', '{{request.session.out_code|lower}}', 1]);
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            _gaq.push(['_trackEvent', 'form_error_delivery_time', '{{ error|escapejs }}']);
+        {% endfor %}
+    {% endif %}
+{% endblock %}

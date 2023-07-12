@@ -1,0 +1,30 @@
+{% load humanize %}
+{% load staticfiles %}
+
+<div data-src="{% static item.image %}" class='item-wrapper col-md-6 col-sm-6 col-xs-12' data-category='{{ item.category.pk }}' data-price='{{ item.price }}'>
+    <div class='row item-title-bar'>
+        <div class='col-xs-8 item-name'>
+            {{ item.name }}
+        </div>
+
+        <div class='col-xs-4 item-price'>
+            &pound;{{ item.price|floatformat:2|intcomma }}
+        </div>
+    </div>
+
+    <div class='row item-quantity-wrapper{% if item.selected_quantity > 0 %} has-success{% endif %}'>
+        {% if item.description %}
+            <div class='row item-description-wrapper'>
+                {{ item.description }}
+            </div>
+        {% endif %}
+
+        <label for='quantity-{{ item.pk }}'>Quantity</label>
+        <select class="form-control input-lg" name='quantity-{{ item.pk }}' id='quantity-{{ item.pk }}'>
+            <option value='0'>0</option>
+            {% for quantity in quantity_range %}
+                <option value='{{ quantity }}' {% ifequal item.selected_quantity quantity %}selected{% endifequal %}>{{ quantity }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>

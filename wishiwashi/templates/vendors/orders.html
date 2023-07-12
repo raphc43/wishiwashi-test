@@ -1,0 +1,227 @@
+{% extends "vendors/base.html" %}
+
+{% load add_one_hour %}
+{% load humanize %}
+{% load postcodes %}
+
+{% block desktop_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Orders</h1>
+
+            <p class='auto-refresh-notice'>This page will automatically update every 15 seconds.</p>
+            
+            <div class="spinner move-up">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+
+            <table id="latest-orders">
+                <thead>
+                    <tr>
+                        <th>Postcode</th>
+                        <th>Pick up</th>
+                        <th>Delivery</th>
+                        <th class='number'>Retail Value</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% if not orders %}
+                        <tr class='no-orders-available'>
+                            <td colspan="7">There are no orders in the system at the moment.</td>
+                        </tr>
+                    {% else %}
+                        {% for order in orders %}
+                            <tr {% if order.assigned_to_vendor and order.assigned_to_vendor != request.user.vendor %}class='order-taken'{% endif %} data-order-id="{{ order.pk }}">
+                                <td>{{ order.pick_up_and_delivery_address.postcode|default:''|format_postcode }}</td>
+                                <td>{{ order.pick_up_time|date:'D, M jS gA' }} - {{ order.pick_up_time|add_one_hour|time:"gA" }}</td>
+                                <td>{{ order.drop_off_time|date:'D, M jS gA' }} - {{ order.drop_off_time|add_one_hour|time:"gA" }}</td>
+                                <td class='number'>&pound;{{order.total_price_of_order|floatformat:2|intcomma }}</td>
+                                {% if order.assigned_to_vendor and order.assigned_to_vendor != request.user.vendor %}
+                                    <td colspan="2">Taken by another vendor</td>
+                                {% else %}
+                                    {% if order.assigned_to_vendor and order.assigned_to_vendor == request.user.vendor %}
+                                        <td><a href="{% url 'vendors:order' order.pk %}">View order</a></td>
+                                    {% else %}
+                                        <td><a href="{% url 'vendors:confirm_accept_order' order.pk %}">Accept order</a></td>
+                                    {% endif %}
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block non_fixed_footer %}non-fixed{% endblock %}
+
+{% block mobile_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Available Orders</h1>
+        </div>
+    </div>
+
+    <div class="row" id="progress-bar-row">
+        <div class="col-xs-12">
+            <p>This page will automatically update every 15 seconds.</p>
+        
+            <div class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+            <div class='clear'></div>
+            <br/>
+        </div>
+    </div>
+
+    {% if not orders %}
+        <p class='no-orders-available'>There are no orders in the system at the moment.</p>
+    {% else %}
+        {% for order in orders %}
+            <div class="row">
+                <div class="col-xs-12 order-card {% if order.assigned_to_vendor and order.assigned_to_vendor != request.user.vendor %}taken{% endif %}" data-order-id="{{ order.pk }}">
+                    <div class='left big'>{{ order.pick_up_and_delivery_address.postcode|default:''|format_postcode }}</div>
+                    <div class='right big'>&pound;{{order.total_price_of_order|floatformat:2|intcomma }}</div>
+                    <div class='clear'></div>
+                    <br/>
+                    <p>Pick up <strong>{{ order.pick_up_time|date:'D, M jS gA' }} - {{ order.pick_up_time|add_one_hour|time:"gA" }}</strong></p>
+                    <p>Drop off <strong>{{ order.drop_off_time|date:'D, M jS gA' }} - {{ order.drop_off_time|add_one_hour|time:"gA" }}</strong></p>
+                    
+                    {% if order.assigned_to_vendor and order.assigned_to_vendor != request.user.vendor %}
+                        &nbsp;
+                    {% else %}
+                        <div class='clear'></div>
+                        <div class='left'>
+                            &nbsp;
+                        </div>
+                        <div class='right'>
+                            {% if order.assigned_to_vendor and order.assigned_to_vendor == request.user.vendor %}
+                                <a href="{% url 'vendors:order' order.pk %}">View order</a>
+                            {% else %}
+                                {% if not order.assigned_to_vendor %}
+                                    <a href="{% url 'vendors:confirm_accept_order' order.pk %}">Accept order</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    {% endif %} 
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+
+{% block js_bottom %}
+    get_latest_orders = function() {
+        $('.spinner div').fadeIn();
+
+        $.ajax({
+            type: "POST",
+            url: "{% url 'vendors:get_latest_orders' %}",
+            data: {
+                'latest_order_id': $('table#latest-orders tbody tr:eq(0)').data('order-id'),
+                'csrfmiddlewaretoken': "{{ csrf_token }}",
+            },
+            success: function(data) {
+                // TODO Make sure the DOM element hasn't already been added by another concurrent process
+                if(data) {
+                    $('#desktop table#latest-orders tr.no-orders-available').remove();
+                    $('#mobile p.no-orders-available').remove();
+
+                    if(data.orders) {
+                        data.orders.reverse();
+                        for(index in data.orders) {
+                            var order = data.orders[index];
+
+                            if($('#desktop table#latest-orders tbody').length === 0) {
+                                $('#desktop table#latest-orders').prepend('<tbody></tbody>');
+                            }
+
+                            // Desktop version
+                            var record = [];
+
+                            if(order.is_taken_by_other_vendor) {
+                                record.push('<tr data-order-id="' + order.pk + '" class="order-taken">');
+                            } else {
+                                record.push('<tr data-order-id="' + order.pk + '">');
+                            }
+
+                            record.push('<td>' + order.postcode + '</td>');
+                            record.push('<td>' + order.pick_up_time + '</td>');
+                            record.push('<td>' + order.drop_off_time + '</td>');
+                            record.push('<td class="number">£' + order.total_price_of_order + '</td>');
+
+                            if(order.is_taken_by_other_vendor) {
+                                record.push('<td>Taken by another vendor</td>');
+                            } else {
+                                if(order.is_taken_by_requester) {
+                                    record.push('<td>Order Accepted</td>');
+                                } else {
+                                    record.push('<td><a href="' + order.confirm_accept_order_url + '">Accept order</a></td>');
+                                }
+                            }
+
+                            record.push('</tr>');
+
+                            $('#desktop table#latest-orders tbody').prepend(record.join(''));
+
+                            // Mobile version
+                            var record = [];
+
+                            record.push('<div class="row">');
+
+                                if(order.is_taken_by_other_vendor) {
+                                    record.push('<div data-order-id="' + order.pk + '" class="col-xs-12 order-card taken">');
+                                } else {
+                                    record.push('<div data-order-id="' + order.pk + '" class="col-xs-12 order-card">');
+                                }
+
+                                    record.push("<div class='left big'>" + order.postcode + "</div>");
+                                    record.push("<div class='right big'>£" + order.total_price_of_order + "</div>");
+                                    record.push("<div class='clear'></div>");
+
+                                    record.push("<br/>");
+                                    record.push("<p>Pick up <strong>" + order.pick_up_time + "</strong></p>");
+                                    record.push("<p>Drop off <strong>" + order.drop_off_time + "</strong></p>");
+                                    
+                                    if(!order.is_taken_by_other_vendor) {
+                                        record.push("<div class='clear'></div>");
+                                        record.push("<div class='left'>&nbsp;</div>");
+                                        record.push("<div class='right'>");
+                                            if(order.is_taken_by_requester) {
+                                                record.push('Order Accepted');
+                                            } else {
+                                                record.push('<a href="' + order.confirm_accept_order_url + '">Accept order</a>');
+                                            }
+                                        record.push('</div>');
+                                    }
+
+                                record.push('</div>');
+                            record.push('</div>');
+                            $('#mobile #progress-bar-row').after(record.join(''));
+                        }
+                    }
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                if(console) {
+                    console.error(textStatus, errorThrown);
+                }
+            },
+            complete: function(XMLHttpRequest, textStatus) {
+                $('.spinner div').fadeOut();
+            }
+        });
+
+        setTimeout(get_latest_orders, 15000);
+    }
+
+    $(document.body).ready(function() {
+        get_latest_orders();
+    });
+{% endblock %}

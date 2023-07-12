@@ -1,0 +1,98 @@
+[
+{
+    "fields": {
+        "description": "Other",
+        "category": 0
+    },
+    "model": "vendors.issuetype",
+    "pk": 1
+},
+{
+    "fields": {
+        "description": "Other",
+        "category": 1
+    },
+    "model": "vendors.issuetype",
+    "pk": 2
+},
+{
+    "fields": {
+        "description": "Other",
+        "category": 2
+    },
+    "model": "vendors.issuetype",
+    "pk": 3
+},
+{
+    "fields": {
+        "description": "Cannot locate property",
+        "category": 1
+    },
+    "model": "vendors.issuetype",
+    "pk": 4
+},
+{
+    "fields": {
+        "description": "No answer at property",
+        "category": 1
+    },
+    "model": "vendors.issuetype",
+    "pk": 5
+},
+{
+    "fields": {
+        "description": "Occupants unaware of order",
+        "category": 1
+    },
+    "model": "vendors.issuetype",
+    "pk": 6
+},
+{
+    "fields": {
+        "description": "Unable to access property",
+        "category": 1
+    },
+    "model": "vendors.issuetype",
+    "pk": 7
+},
+{
+    "fields": {
+        "description": "Unable to reach customer",
+        "category": 0
+    },
+    "model": "vendors.issuetype",
+    "pk": 8
+},
+{
+    "fields": {
+        "description": "Name is misspelt",
+        "category": 0
+    },
+    "model": "vendors.issuetype",
+    "pk": 9
+},
+{
+    "fields": {
+        "description": "Item is missing",
+        "category": 2
+    },
+    "model": "vendors.issuetype",
+    "pk": 10
+},
+{
+    "fields": {
+        "description": "More items than ordered",
+        "category": 2
+    },
+    "model": "vendors.issuetype",
+    "pk": 11
+},
+{
+    "fields": {
+        "description": "Item(s) is/are unwashable",
+        "category": 2
+    },
+    "model": "vendors.issuetype",
+    "pk": 12
+}
+]

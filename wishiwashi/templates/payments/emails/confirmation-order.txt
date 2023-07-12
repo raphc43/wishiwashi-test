@@ -1,0 +1,29 @@
+{% load add_one_hour %}
+{% load humanize %}
+{% load postcodes %}Hello {{ order.customer.first_name }} {{ order.customer.last_name }},
+
+Thank you for placing your order. This e-mail is only an acknowledgement of receipt of your order. You will receive a VAT receipt via email once we charge your card on {{credit_card_charge_time|date:'l, F jS'}}.
+
+===============================================================================
+
+Order: {{ order.uuid }}
+
+Pick up and delivery address:
+{% include "snippets/address.txt" with address=order.pick_up_and_delivery_address %}
+
+Pick up time: {{ order.pick_up_time|date:'l jS F' }} between {{ order.pick_up_time|time:'gA' }} & {{ order.pick_up_time|add_one_hour|time:'gA' }}
+Delivery time: {{ order.drop_off_time|date:'l jS F' }} between {{ order.drop_off_time|time:'gA' }} & {{ order.drop_off_time|add_one_hour|time:'gA' }}
+
+Items to clean:
+{% for items in order.items.all %}
+{{ items.item.name }} x {{ items.quantity }} £{{ items.price|floatformat:2 }}
+{% endfor %}
+{% if order.voucher %}
+Voucher applied: {{ order.voucher.voucher_code }}
+{% endif %}
+Pick up and delivery: £{{ order.transportation_charge|floatformat:2 }}
+Order Total: £{{ order.total_price_of_order|floatformat:2 }}
+
+We hope to see you again soon.
+
+Wishi Washi

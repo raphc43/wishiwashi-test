@@ -1,0 +1,9 @@
+{% load mobile_number %}
+{{order.customer.first_name}} {{ order.customer.last_name }}<br>
+{{order.pick_up_and_delivery_address}}<br>
+{% if order.pick_up_and_delivery_address.instructions_for_delivery %}
+<strong>{{ order.pick_up_and_delivery_address.instructions_for_delivery|upper }}</strong><br>
+{% endif %}
+{{order.customer.userprofile.mobile_number|mobile_number}}<br>
+<small>{{order.uuid}} ({{order.ticket_id}})</small>
+

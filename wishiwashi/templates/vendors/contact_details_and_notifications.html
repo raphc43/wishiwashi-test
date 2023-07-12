@@ -1,0 +1,146 @@
+
+{% extends "vendors/base.html" %}
+
+{% block desktop_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Contact Details &amp; Notifications</h1>
+        </div>
+    </div>
+
+    {% if form.non_field_errors %}
+        <div class="row">
+            <div class="col-xs-12">
+                {% if form.non_field_errors %}
+                    <p class="error">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if successfully_modified %}
+        <div class="row">
+            <div class="text-center alert col-xs-12 alert-success">
+                <p>Your details and preferences have been saved.</p>
+            </div>
+        </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'vendors:contact_details_and_notifications' %}" class="labels-above-inputs">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="col-xs-10 col-sm-offset-1">
+                <label for="email_address">{{form.email_address.label}}</label>
+                <input type="text" id="email_address" name="email_address" value="{{form.email_address.value|default:''}}" {% if form.email_address.errors %}class='form-element-error'{% endif %} />
+                {% if form.email_address.errors %}
+                    {% for error in form.email_address.errors %}
+                        <span class="form-element-error">{{ error|escape }}</span>
+                    {% endfor %}
+                {% endif %}
+
+                <br/>
+                <input type="checkbox" name="notify_via_email" id="notify_via_email" class='next_to_label' {% if form.notify_via_email.value %}checked{% endif %}/>
+                <label for="notify_via_email">Notify me of new orders via E-mail.</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-10 col-sm-offset-1">
+                <label for="mobile_number">{{form.mobile_number.label}}</label>
+                <input type="text" id="mobile_number" name="mobile_number" value="{{form.mobile_number.value|default:''}}" {% if form.mobile_number.errors %}class='form-element-error'{% endif %}/>
+                {% if form.mobile_number.errors %}
+                    {% for error in form.mobile_number.errors %}
+                        <span class="form-element-error">{{ error|escape }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-10 col-sm-offset-1 form-submit-wrapper">
+                <input type="submit" value="" />
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block non_fixed_footer %}non-fixed{% endblock %}
+
+{% block mobile_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Contact Details &amp; Notifications</h1>
+        </div>
+    </div>
+
+    {% if form.non_field_errors %}
+        <div class="row">
+            <div class="col-xs-12">
+                {% if form.non_field_errors %}
+                    <p class="error">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if successfully_modified %}
+        <div class="row">
+            <div class="col-xs-12">
+                <p>Your details and preferences have been saved.</p>
+            </div>
+        </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'vendors:contact_details_and_notifications' %}" class="labels-above-inputs">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="col-xs-12">
+                <label for="email_address">{{form.email_address.label}}</label>
+                <input type="text" id="email_address" name="email_address" value="{{form.email_address.value|default:''}}" {% if form.email_address.errors %}class='form-element-error'{% endif %} />
+                {% if form.email_address.errors %}
+                    {% for error in form.email_address.errors %}
+                        <span class="form-element-error">{{ error|escape }}</span>
+                    {% endfor %}
+                {% endif %}
+
+                <br/>
+                <input type="checkbox" name="notify_via_email" id="notify_via_email" class='next_to_label' {% if form.notify_via_email.value %}checked{% endif %}/>
+                <label for="notify_via_email">Notify me of new orders via E-mail.</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <label for="mobile_number">{{form.mobile_number.label}}</label>
+                <input type="text" id="mobile_number" name="mobile_number" value="{{form.mobile_number.value|default:''}}" {% if form.mobile_number.errors %}class='form-element-error'{% endif %}/>
+                {% if form.mobile_number.errors %}
+                    {% for error in form.mobile_number.errors %}
+                        <span class="form-element-error">{{ error|escape }}</span>
+                    {% endfor %}
+                {% endif %}
+
+                <br/>
+                <input type="checkbox" name="notify_via_sms" id="notify_via_sms" class='next_to_label' {% if form.notify_via_sms.value %}checked{% endif %}/>
+                <label for="notify_via_sms">Notify me of new orders via SMS.</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <center>
+                    <input type="submit" value="Save" />
+                </center>
+            </div>
+        </div>
+    </form>
+{% endblock %}

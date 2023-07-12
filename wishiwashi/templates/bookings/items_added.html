@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load staticfiles %}
+{% load pipeline %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-10 col-sm-10 col-md-offset-1 col-sm-offset-1">
+            <h1>Items</h1>
+            {% if not items %}
+                <h2 class="text-center">You have not added any items to your order</h2>
+                <a href="{% url 'landing' %}" class="btn btn-primary pull-right hidden-xs">Place a new order <i class="fa fa-angle-double-right"></i></a>
+                <a href="{% url 'landing' %}" class="btn btn-primary btn-block visible-xs">Place a new order<i class="fa fa-angle-double-right"></i></a>
+            {% else %}
+
+            <div class="row">
+                <div class="col-xs-12">
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        <i class="fa fa-warning" aria-hidden="true"></i>
+                        <span class="sr-only">Error:</span>
+                         {% for error in form.non_field_errors %}
+                             {{ error }}<br>
+                         {% endfor %}
+                    </div>
+                    {% elif form.is_valid %}
+                    <div class="alert alert-success" role="alert">
+                        <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                        Items successfully updated.
+                    </div>
+                    <div class="row padding-bottom-sm">
+                        <div class="form-group col-xs-12 col-sm-12 col-md-12">
+                            <a href="{% url 'registration:create_account' %}" class="btn btn-success btn-lg pull-right hidden-xs">Proceed with order <i class="fa fa-angle-double-right"></i></a>
+                            <a href="{% url 'registration:create_account' %}" class="btn btn-success btn-lg btn-block visible-xs">Proceed with order <i class="fa fa-angle-double-right"></i></a>
+                        </div>
+                    </div>
+                    {% endif %}
+                 </div>
+            </div>
+
+            {% include "snippets/subtotal.html" %}
+            <form method="post" action="{% url 'bookings:items_added' %}">
+            {% csrf_token %}
+            <div class="row padding-bottom-sm">
+                <div class="form-group col-xs-12 col-sm-12 col-md-12">
+                    <button type="submit" class="btn btn-primary btn-lg pull-right hidden-xs">Update Items</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block visible-xs">Update Items</button>
+                </div>
+            </div>
+            <div class="row padding-bottom-sm">
+                <div class="col-xs-12">
+                {% for item in items %}
+                    {% include "bookings/item.html" with item=item %}
+                {% endfor %}
+                </div>
+            </div>
+
+            <div class="row padding-top-sm">
+                <div class="form-group col-xs-12 col-sm-12 col-md-12">
+                    <button type="submit" class="btn btn-primary btn-lg pull-right hidden-xs">Update Items</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block visible-xs">Update Items</button>
+                </div>
+            </div>
+            <form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block js_bottom %}
+<script>var total={{ total }};</script>
+{% javascript 'items_added' %}
+{% endblock %}
+
+{% block ga_track_custom_var %}
+{% if form.non_field_errors %}
+    {% for error in form.non_field_errors %}
+        _gaq.push(['_trackEvent', 'form_error_items_to_clean', '{{ error|escapejs }}']);
+    {% endfor %}
+{% endif %}
+{% endblock %}
+
+

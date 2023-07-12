@@ -1,0 +1,128 @@
+{% extends "vendors/base.html" %}
+
+{% block desktop_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Postcodes Served</h1>
+        </div>
+    </div>
+
+    {% if form.non_field_errors or form.errors %}
+        <div class="row">
+            <div class="col-xs-12">
+                {% if form.non_field_errors %}
+                    <p class="error">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+
+                <p class="error">
+                    There is an issue with one or more of the catchment areas below.
+                </p>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if successfully_modified %}
+        <div class="row">
+            <div class="col-xs-12">
+                <p>Your new catchment area has been saved.</p>
+            </div>
+        </div>
+    {% endif %}
+
+
+        <div class="row">
+            <div class="col-xs-6 col-sm-offset-3">
+                <form method="post" action="{% url 'vendors:postcodes_served' %}">
+                    {% csrf_token %}
+                    <center>
+                        <input type="submit" value="Save" />
+                    </center>
+
+                    <table>
+                        <tr>
+                            <th>Out code</th>
+                            <th>Served?</th>
+                        </tr>
+                        {% for out_code in out_codes %}
+                            <tr>
+                                <td>{{out_code.out_code|upper}}</td>
+                                <td>
+                                    <input type="radio" name="{{out_code.out_code|upper}}" id="{{out_code.out_code|upper}}_not_served_desktop" value="0" {% if not out_code.served %}checked{% endif %}> <label for="{{out_code.out_code|upper}}_not_served_desktop">Not served</label>
+
+                                    <input type="radio" name="{{out_code.out_code|upper}}" value="1" id="{{out_code.out_code|upper}}_served_desktop" {% if out_code.served %}checked{% endif %}> <label for="{{out_code.out_code|upper}}_served_desktop">Served</label>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </form>
+            </div>
+        </div>
+{% endblock %}
+
+{% block non_fixed_footer %}non-fixed{% endblock %}
+
+{% block mobile_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Postcodes Served</h1>
+        </div>
+    </div>
+
+    {% if form.non_field_errors or form.errors %}
+        <div class="row">
+            <div class="col-xs-12">
+                {% if form.non_field_errors %}
+                    <p class="error">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+
+                <p class="error">
+                    There is an issue with one or more of the catchment areas below.
+                </p>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if successfully_modified %}
+        <div class="row">
+            <div class="col-xs-12">
+                <p>Your new catchment area has been saved.</p>
+            </div>
+        </div>
+    {% endif %}
+
+        <div class="row">
+            <div class="col-xs-12">
+                <form method="post" action="{% url 'vendors:postcodes_served' %}">
+                    {% csrf_token %}
+                    <center>
+                        <input type="submit" value="Save" />
+                    </center>
+
+                    <table>
+                        <tr>
+                            <th>Out code</th>
+                            <th>Served?</th>
+                        </tr>
+                        {% for out_code in out_codes %}
+                            <tr>
+                                <td>{{out_code.out_code|upper}}</td>
+                                <td>
+                                    <input type="radio" name="{{out_code.out_code|upper}}" id="{{out_code.out_code|upper}}_not_served_mobile" value="0" {% if not out_code.served %}checked{% endif %}> <label for="{{out_code.out_code|upper}}_not_served_mobile">Not served</label>
+
+                                    <input type="radio" name="{{out_code.out_code|upper}}" value="1" id="{{out_code.out_code|upper}}_served_mobile" {% if out_code.served %}checked{% endif %}> <label for="{{out_code.out_code|upper}}_served_mobile">Served</label>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </form>
+            </div>
+        </div>
+{% endblock %}

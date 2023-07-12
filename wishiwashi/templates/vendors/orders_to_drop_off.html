@@ -1,0 +1,75 @@
+{% extends "vendors/base.html" %}
+
+{% block desktop_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Orders to drop off</h1>
+
+            {% if orders %}
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form method="post" action="{% url 'vendors:orders_to_drop_off_pdf' %}">
+                            {% csrf_token %}
+                            <button class="btn btn-primary pull-right" type="submit">Download All <i class="fa fa-file-pdf-o"></i></button>
+                        </form>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+            {% endif %}
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Postcode</th>
+                        <th>Pick up</th>
+                        <th>Delivery</th>
+                        <th class='number'>Order Value</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% if not orders %}
+                        <tr class='no-orders-available'>
+                            <td colspan="5">There are no orders to drop off today.</td>
+                        </tr>
+                    {% else %}
+                        {% for order in orders %}
+                            {% include "vendors/orders_list_item_desktop.html" with disable_throw_back=True %}
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block non_fixed_footer %}non-fixed{% endblock %}
+
+{% block mobile_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Orders to drop off</h1>
+        </div>
+    </div>
+
+    {% if not orders %}
+        <p class='no-orders-available'>There are no orders to drop off today.</p>
+    {% else %}
+        <div class="row">
+            <div class="col-xs-12">
+                <form method="post" action="{% url 'vendors:orders_to_drop_off_pdf' %}">
+                    {% csrf_token %}
+                    <button class="btn btn-primary pull-right" type="submit">Download All <i class="fa fa-file-pdf-o"></i></button>
+                </form>
+            </div>
+        </div>
+        <br/>
+        <br/>
+
+        {% for order in orders %}
+            {% include "vendors/orders_list_item_mobile.html" %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends "vendors/base.html" %}
+
+{% load add_one_hour %}
+{% load humanize %}
+{% load postcodes %}
+
+{% block desktop_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Order #{{ order.uuid|upper }}</h1>
+        </div>
+    </div>
+    {% if form.non_field_errors %}
+        <div class="row">
+            <div class="col-xs-12">
+                {% if form.non_field_errors %}
+                    <p class="error">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+
+    <div class="labels-above-inputs">
+        <div class="row">
+            <div class="col-xs-4">
+            </div>
+            <div class="col-xs-2">
+                <form method="post" action="{% url 'vendors:accepted_order' order_pk=order.pk %}" class='inline'>
+                    {% csrf_token %}
+                    <input type="submit" class='large green' value="Accept this order" />
+                </form>
+            </div>
+            <div class="col-xs-2">
+                <form method="get" action="{% url 'vendors:orders' %}" class='inline'>
+                    <input type="submit" class='large red' value="Do not accept" />
+                </form>
+            </div>
+            <div class="col-xs-4">
+            </div>
+        </div>
+        <br/>
+        <br/>
+
+        <div class="row">
+            <div class="col-xs-4">
+                <h2>Pick up</h2>
+
+                <p>{{ order.pick_up_time|date:'l jS F' }}<br/>
+                between {{ order.pick_up_time|time:'gA' }} &amp; {{ order.pick_up_time|add_one_hour|time:'gA' }}</p>
+            </div>
+
+            <div class="col-xs-4">
+                <h2>Delivery</h2>
+                <p>{{ order.drop_off_time|date:'l jS F' }}<br/>
+                between {{ order.drop_off_time|time:'gA' }} &amp; {{ order.drop_off_time|add_one_hour|time:'gA' }}</p>
+            </div>
+
+            <div class="col-xs-4">
+                <h2>Postcode</h2>
+                <p>{{ order.pick_up_and_delivery_address.postcode|format_postcode }}</p>
+            </div>
+        </div>
+        <br/>
+        <br/>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <label for="">Items for washing / dry cleaning</label>
+                
+                <table>
+                    <tr>
+                        <th>Item</th>
+                        <th class='number'>Quantity</th>
+                        <th class='number'>Price / Item</th>
+                    </tr>
+
+                    {% for item_and_quantity in order.items.all %}
+                        <tr>
+                            <td>{{ item_and_quantity.item.category.name }} - {{ item_and_quantity.item.vendor_friendly_name }}</td>
+                            <td class='number'>{{ item_and_quantity.quantity }}</td>
+                            <td class="number">&pound;{{ item_and_quantity.item.price|floatformat:2|intcomma }}</td>
+                        </tr>
+                    {% endfor %}
+                    
+                    {% if order.voucher %}
+                        <tr>
+                            <td><strong>Discount applied using voucher code</strong></td>
+                            <td colspan="2" class="number"><strong>-{{ order.voucher.percentage_off|floatformat:0 }} &#37;</strong></td>
+                        </tr>
+                    {% endif %}
+
+                    <tr>
+                        <td colspan="3" class="number"><strong>Retail Grand Total: &pound;{{ order.total_price_of_order|floatformat:2|intcomma }}</strong></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block non_fixed_footer %}non-fixed{% endblock %}
+
+{% block mobile_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Order #{{ order.uuid|upper }}</h1>
+        </div>
+    </div>
+    
+    <div class="labels-above-inputs">
+        <div class="row">
+            <div class="col-xs-6">
+                <form method="post" action="{% url 'vendors:accepted_order' order_pk=order.pk %}" class='inline'>
+                    {% csrf_token %}
+                    <input type="submit" class='large green' value="Accept this order" />
+                </form>
+            </div>
+            <div class="col-xs-6">
+                <form method="get" action="{% url 'vendors:orders' %}" class='inline'>
+                    <input type="submit" class='large red' value="Do not accept" />
+                </form>
+            </div>
+        </div>
+        <br/>
+        <br/>
+
+        <div class="row">
+            <div class="col-xs-4">
+                <h2>Pick up</h2>
+
+                <p>{{ order.pick_up_time|date:'l jS F gA' }} - {{ order.pick_up_time|add_one_hour|time:'gA' }}</p>
+            </div>
+
+            <div class="col-xs-4">
+                <h2>Delivery</h2>
+                <p>{{ order.drop_off_time|date:'l jS F gA' }} - {{ order.drop_off_time|add_one_hour|time:'gA' }}</p>
+            </div>
+
+            <div class="col-xs-4">
+                <h2>Postcode</h2>
+                <p>{{ order.pick_up_and_delivery_address.postcode|format_postcode }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <label for="">Items for washing / dry cleaning</label>
+                
+                <table>
+                    <tr>
+                        <th>Item</th>
+                        <th class='number'>Quantity</th>
+                        <th class='number'>Price / Item</th>
+                    </tr>
+
+                    {% for item_and_quantity in order.items.all %}
+                        <tr>
+                            <td>{{ item_and_quantity.item.category.name }} - {{ item_and_quantity.item.vendor_friendly_name }}</td>
+                            <td class='number'>{{ item_and_quantity.quantity }}</td>
+                            <td class="number">&pound;{{ item_and_quantity.item.price|floatformat:2|intcomma }}</td>
+                        </tr>
+                    {% endfor %}
+                    
+                    {% if order.voucher %}
+                        <tr>
+                            <td><strong>Discount applied using voucher code</strong></td>
+                            <td colspan="2" class="number"><strong>-{{ order.voucher.percentage_off|floatformat:0 }} &#37;</strong></td>
+                        </tr>
+                    {% endif %}
+
+                    <tr>
+                        <td colspan="3" class="number"><strong>Retail Grand Total: &pound;{{ order.total_price_of_order|floatformat:2|intcomma }}</strong></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

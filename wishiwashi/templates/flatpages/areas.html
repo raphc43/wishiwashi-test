@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load pipeline %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Areas we cover</h2>
+            <div id="map-canvas"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>South West London</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="list-unstyled">
+                <li>SW2: Brixton, Streatham Hill</li>
+                <li>SW3: Brompton, Chelsea</li>
+                <li>SW4: Clapham</li>
+                <li>SW5: Earl's Court</li>
+                <li>SW6: Fulham, Parson's Green</li>
+                <li>SW7: South Kensington</li>
+                <li>SW8: Nine Elms, South Lambeth</li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <ul class="list-unstyled">
+                <li>SW9: Brixton, Stockwell</li>
+                <li>SW10: West Brompton, Imperial Wharf</li>
+                <li>SW11: Battersea, Clapham Junction</li>
+                <li>SW12: Balham</li>
+                <li>SW13: Barnes, Castelnau</li>
+                <li>SW14: East Sheen, Mortlake</li>
+                <li>SW15: Putney, Roehampton</li>
+            </ul>
+        </div>
+         <div class="col-md-4">
+            <ul class="list-unstyled">
+                <li>SW16: Norbury, Streatham</li>
+                <li>SW17: Tooting</li>
+                <li>SW18: Earlsfield, Wandsworth</li>
+                <li>SW19: Merton, Wimbledon</li>
+                <li>SW20: Raynes Park, South Wimbledon</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js_bottom %}
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_PUBLIC_API_KEY }}"></script>
+{% javascript 'maps' %}
+{% endblock %}

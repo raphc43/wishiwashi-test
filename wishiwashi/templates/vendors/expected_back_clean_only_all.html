@@ -1,0 +1,121 @@
+{% extends "vendors/base.html" %}
+
+{% load add_one_hour %}
+{% load humanize %}
+{% load postcodes %}
+
+{% block desktop_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Expected Back Clean Only Orders (Unconfirmed)</h1>
+        </div>
+    </div>
+
+    <div class="alert notify"></div>
+    {% if not expected_back %}
+        <div class="row">
+            <div class="col-xs-12">
+                <p>No orders expected back</p>
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col-xs-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Ticket</th>
+                        <th>Pieces</th>
+                        <th>Pick up</th>
+                        <th>Delivery</th>
+                        <th class='number'>Value</th>
+                        <th>Status</th>
+                        <th>Vendor</th>
+                        <th>Expected Back</th>
+                        <th>Received Back</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for obj in expected_back %}
+                <tr data-order-id="{{ obj.clean_only_order.order.pk }}">
+                    <form class="expected_back_confirm">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{obj.pk}}">
+                        <td><a href="{% url 'vendors:order' obj.clean_only_order.order.pk %}">{{ obj.clean_only_order.order.uuid }}</a></td>
+                        <td><strong>{{ obj.clean_only_order.order.ticket_id }}</strong></td>
+                        <td class='number'>{{ obj.pieces }}</td>
+                        <td>{{ obj.clean_only_order.order.pick_up_time|date:'D, M jS gA' }} - {{ obj.clean_only_order.order.pick_up_time|add_one_hour|time:"gA" }}</td>
+                        <td>{{ obj.clean_only_order.order.drop_off_time|date:'D, M jS gA' }} - {{ obj.clean_only_order.order.drop_off_time|add_one_hour|time:"gA" }}</td>
+                        <td class='number'>&pound;{{ obj.clean_only_order.order.total_price_of_order|floatformat:2|intcomma }}</td>
+                        <td>{{obj.clean_only_order.order.get_order_status_display}}</td>
+                        <td>{{obj.clean_only_order.assigned_to_vendor.company_name}}</td>
+                        <td><strong>{{ obj.expected_back|date:'D, jS M P' }}</strong></td>
+                        {% if not obj.confirmed_back %}
+                        <td><button id="desktop_{{obj.pk}}" type="submit" class="btn btn-danger">Confirm</button></td>
+                        {% else %}
+                            <td>Confirmed</td>
+                        {% endif %}
+                    </form>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        {% endif %}
+        </div>
+{% endblock %}
+
+{% block non_fixed_footer %}non-fixed{% endblock %}
+
+{% block mobile_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Expected Back Clean Only Orders</h1>
+        </div>
+    </div>
+
+    <div class="alert notify"></div>
+    {% if not expected_back %}
+        <div class="row">
+            <div class="col-xs-12">
+                <p>No orders expected back</p>
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col-xs-12">
+                {% for obj in expected_back %}
+                <form class="expected_back_confirm">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{obj.pk}}">
+                <div class="col-xs-12 order-card">
+                    <div class='left big'><a href="{% url 'vendors:order' obj.clean_only_order.order.pk %}">{{ obj.clean_only_order.order.uuid }}</a></div>
+                    <div class='right big'><strong>{{ obj.clean_only_order.order.ticket_id }}</strong></div>
+                    <div class='clear'></div>
+                    <br/>
+                    <p>Pick up:{{ obj.clean_only_order.order.pick_up_time|date:'D, M jS gA' }} - {{ obj.clean_only_order.order.pick_up_time|add_one_hour|time:"gA" }}</p>
+                    <p>Deliver: {{ obj.clean_only_order.order.drop_off_time|date:'D, M jS gA' }} - {{ obj.clean_only_order.order.drop_off_time|add_one_hour|time:"gA" }}</p>
+                    <p>Order Value: &pound;{{ obj.clean_only_order.order.total_price_of_order|floatformat:2|intcomma }}</p>
+                    <p>Status: {{obj.clean_only_order.order.get_order_status_display}}</p>
+                    <p>Clean only: {{obj.clean_only_order.assigned_to_vendor.company_name}}</p>
+                    <p>Expected back: <strong>{{ obj.expected_back|date:'D, jS M P' }}</strong></p>
+                    <p>Pieces: {{ obj.pieces }}</p>
+                    {% if not obj.confirmed_back %}
+                        <p><button id="mobile_{{obj.pk}}" type="submit" class="btn btn-danger">Confirm</button></p>
+                    {% else %}
+                        <p class="success">Confirmed</p>
+                    {% endif %}
+                </div>
+                </form>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+
+{% block js_bottom %}
+{% include 'snippets/expected_back.js' %}
+{% endblock %}

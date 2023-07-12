@@ -1,0 +1,22 @@
+<footer class="hidden-print">
+    <div class="container text-center">
+        <hr class="primary">
+            <ul class="list-inline">
+                <li><a href="{% url 'aboutus' %}">About Us</a></li>
+                <li><a href="{% url 'faq:questions' %}">FAQ</a></li>
+                <li><a href="{% url 'privacy' %}">Privacy</a></li>
+                <li><a href="{% url 'terms' %}">T&amp;Cs</a></li>
+            </ul>
+            <p>{{HOURS_OF_OPERATION}}</p>
+            
+            <address>
+            <ul class="list-inline">
+                <li><a title="Contact us by telephone" href="tel:{{UK_PHONE_NUMBER_UGLY}}"><i class="fa fa-phone fa-lg"></i> {{UK_PHONE_NUMBER}}</a></li>
+                <li><a title="Email us: help@wishiwashi.com" href="mailto:help@wishiwashi.com"><i class="fa fa-envelope fa-lg"></i> Email</a></li>
+                <li><a title="Find us on Twitter" href="https://twitter.com/wishiwashi" target="_blank"><i class="fa fa-twitter fa-lg"></i> Twitter</a></li>
+            </ul>
+            <small>Wishi Washi Ltd, Units 5/6 School Road,<br>Park Royal, London, NW10 6TD</small>
+            </address>
+            <small>&copy; Wishi Washi Ltd {% now "Y" %}</small>
+    </div> <!-- /container -->
+</footer>

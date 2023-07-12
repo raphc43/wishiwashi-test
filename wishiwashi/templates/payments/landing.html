@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% load add_one_hour %}
+{% load humanize %}
+{% load phone_numbers %}
+{% load postcodes %}
+{% load staticfiles %}
+
+{% block css_top %}
+<style>
+table td.number,
+table th.number {
+    text-align: right;
+    padding-right: 16px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="hidden-xs text-center">
+            {{progress.0|safe}}
+        </div>
+        <div class="visible-xs text-center">
+            {{progress.1|safe}}
+        </div>
+        <!--[if lt IE 9]>
+            <div class="col-xs-12">
+                <h1>Payment</h1>
+            </div>
+        <![endif]-->
+    </div>
+
+    <div class="row padding-top-sm text-center">
+        {% if messages %}
+        <div class="row">
+            {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    <i class="fa fa-warning" aria-hidden="true"></i>
+                    {{ message }}<br>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="col-md-6 col-sm-6 col-md-offset-3 col-sm-offset-3 col-xs-12">
+        {% include 'payments/stripe-form.html' %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-offset-1 col-sm-offset-1 col-md-3 col-sm-3 col-xs-6">
+            <h2>Pick up</h2>
+            <p>
+                <strong>{{ order.pick_up_time|date:'l, F jS' }}</strong><br/>
+                Between <strong>{{ order.pick_up_time|time:'gA' }} &amp; {{ order.pick_up_time|add_one_hour|time:'gA' }}</strong>
+            </p>
+            <p><a href="{% url 'bookings:pick_up_time' %}">Change this?</a></p>
+        </div>
+        <div class="col-md-offset-1 col-sm-offset-1 col-md-3 col-sm-3 col-xs-6">
+            <h2>Delivery</h2>
+            <p>
+                <strong>{{ order.drop_off_time|date:'l, F jS' }}</strong><br/>
+                Between <strong>{{ order.drop_off_time|time:'gA' }} &amp; {{ order.drop_off_time|add_one_hour|time:'gA' }}</strong>
+            </p>
+            <p><a href="{% url 'bookings:delivery_time' %}">Change this?</a></p>
+        </div>
+        <div class="col-md-offset-1 col-sm-offset-1 col-md-3 col-sm-3 col-xs-12">
+            <h2>Address</h2>
+            <p>
+                <strong>
+                    {{ order.pick_up_and_delivery_address.flat_number_house_number_building_name }}
+                    {{ order.pick_up_and_delivery_address.address_line_1 }}
+                    <br/>
+                    {% if order.pick_up_and_delivery_address.address_line_2 %}
+                        {{ order.pick_up_and_delivery_address.address_line_2 }}
+                        <br/>
+                    {% endif %}
+                </strong>
+                London, <strong>{{ order.pick_up_and_delivery_address.postcode|format_postcode }}</strong>
+            </p>
+            <p><a href="{% url 'bookings:address' %}">Change this?</a></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10">
+            <h2>Items</h2>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th class="number">Quantity</th>
+                        <th class="number">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for details in order.items.all %}
+                        <tr>
+                            <td>{{ details.item.category.name }} - {{ details.item.name }}</td>
+                            <td class="number">{{ details.quantity }}</td>
+                            <td class="number">&pound;{{ details.price|floatformat:2|intcomma }}</td>
+                        </tr>
+                    {% endfor %}
+
+                    {% if order.voucher %}
+                        <tr>
+                            <td><strong>Discount applied using voucher code "{{ order.voucher.voucher_code|upper}}"</strong></td>
+                            <td colspan="2" class="number"><strong>-{{ order.voucher.percentage_off|floatformat:"-1" }} &#37;</strong></td>
+                        </tr>
+                    {% endif %}
+
+                    <tr>
+                        <td colspan="3" class="number"><strong>Pick up and delivery: &pound;{{ order.transportation_charge|floatformat:2|intcomma }}</strong></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3" class="number"><strong>Total: &pound;{{ order.total_price_of_order|floatformat:2|intcomma }}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="{% url 'bookings:items_to_clean' %}">Add or remove items?</a></p>
+        </div>
+    </div>
+
+    <div class="row padding-top-sm">
+        <div class="col-md-6 col-sm-6 col-md-offset-3 col-sm-offset-3 col-xs-12">
+        {% include 'payments/stripe-form.html' %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10">
+            <h2>Any vouchers?</h2>
+
+            <form class="form-inline" method="post" action="{% url 'payments:landing' %}">
+                {% csrf_token %}
+                <div class="form-group{% if form.voucher_code.errors %} has-error{% endif %}">
+                    <label for="voucher_code">Voucher code:</label>
+                    <input type="text" required name="voucher_code" class="form-control" value="{{form.voucher_code.value|default:''}}" id="voucher_code">
+
+                    {% if form.voucher_code.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        <i class="fa fa-warning" aria-hidden="true"></i>
+                        <span class="sr-only">Error:</span>
+                         {% for error in form.voucher_code.errors %}
+                             {{ error }}<br>
+                         {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">Apply voucher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block js_bottom %}
+<script>
+    $(document.body).ready(function() {
+        $(".stripe-button-el").addClass( "btn btn-primary btn-lg btn-block pull-right" );
+    });
+</script>
+{% endblock %}
+
+{% block ga_track_custom_var %}
+    {% if messages %}
+        {% for message in messages %}
+            _gaq.push(['_trackEvent', 'form_error_payment', '{{ message|escapejs }}']);
+        {% endfor %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "vendors/base.html" %}
+
+{% load humanize %}
+
+{% block desktop_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>{{thrown_back}} order{{thrown_back|pluralize}} {{thrown_back|pluralize:'has,have'}} been thrown back into the pool</h1>
+
+            {% if rejected %}
+                <p>But {{rejected}} order{{rejected|pluralize}} could not be thrown back in because {{rejected|pluralize:'the,their'}} pick up time is within the next three hours.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block mobile_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>{{thrown_back}} order{{thrown_back|pluralize}} {{thrown_back|pluralize:'has,have'}} been thrown back into the pool</h1>
+
+            {% if rejected %}
+                <p>But {{rejected}} order{{rejected|pluralize}} could not be thrown back in because {{rejected|pluralize:'the,their'}} pick up time is within the next three hours.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

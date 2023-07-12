@@ -1,0 +1,221 @@
+{% extends "vendors/base.html" %}
+
+{% load add_one_hour %}
+{% load humanize %}
+{% load postcodes %}
+{% load expected_back %}
+{% load bootstrap3 %}
+
+{% block desktop_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Orders to tag</h1>
+
+            <div class="row">
+                <div class="col-xs-4 col-sm-offset-4">
+                    <form method="post" action="{% url 'vendors:orders_to_tag' %}">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <input type="submit" class='large green' value="Search">
+                    </form>
+                </div>
+            </div>
+
+            <div class="notify alert" role="alert"></div>
+
+            <div class="row">
+                <div class="col-xs-4 col-sm-offset-4">
+                    <form>
+                        <select class="printer form-control">
+                            {% for printer in printers %}
+                            <option value="{{forloop.counter0}}">Printer {{forloop.counter}}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <button type="button" class="btn btn-primary btn-lg pull-right print_all">Print all</button>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Ticket</td>
+                        <th>Surname</th>
+                        <th>Postcode</th>
+                        <th>Pick up</th>
+                        <th>Delivery</th>
+                        <th class='number'>Value</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% if not orders %}
+                        <tr class='no-orders-available'>
+                            <td colspan="8">There are no orders.</td>
+                        </tr>
+                    {% else %}
+                        {% for order in orders %}
+                        <form class="printer_form desktop form_class" action="{{ printers.0 }}" method="post">
+                            <input type="hidden" name="order_number" value="{{order.uuid}}">
+                            <input type="hidden" name="customer_surname" value="{{order.customer.last_name}}">
+                            <input type="hidden" name="pick_up_time" value="{{order.pick_up_time|date:'Y-m-d G:i'}}">
+                            <input type="hidden" name="drop_off_time" value="{{order.drop_off_time|date:'Y-m-d G:i'}}">
+                            <input type="hidden" name="expected_back" value="{{order.drop_off_time|expected_back}}">
+                            <input type="hidden" name="ticket_id" value="{{order.ticket_id}}">
+                            <input type="hidden" name="pieces" value="{{order.pieces}}">
+                            {% for item in order.items.all %}
+                            <input type="hidden" name="item_{{forloop.counter0}}" value="{{item.quantity}} x {{item.item.vendor_friendly_name}}">
+                            {% endfor %}
+                        <tr data-order-id="{{ order.pk }}">
+                            <td><a href="{% url 'vendors:order' order.pk %}">{{ order.uuid }}</a></td>
+                            <td>{{ order.ticket_id }}</td>
+                            <td>{{ order.customer.last_name }}</td>
+                            <td>{{ order.pick_up_and_delivery_address.postcode|default:''|format_postcode }}</td>
+                            <td>{{ order.pick_up_time|date:'l jS M gA' }} - {{ order.pick_up_time|add_one_hour|time:'gA' }}</td>
+                            <td>{{ order.drop_off_time|date:'l jS M gA' }} - {{ order.drop_off_time|add_one_hour|time:'gA' }}</td>
+                            <td class='number'>&pound;{{order.total_price_of_order|floatformat:2|intcomma }}</td>
+                            <td><input type="submit" class="btn btn-primary" name="submit" value="Print" /></td>
+                        </tr>
+                        </form>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+    </div>
+    </div>
+{% endblock %}
+
+{% block non_fixed_footer %}non-fixed{% endblock %}
+
+{% block mobile_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Orders to tag</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <form method="post" action="{% url 'vendors:orders_to_tag' %}">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <input type="submit" class='large green btn-block' value="Search">
+            </form>
+        </div>
+    </div>
+
+    {% if not orders %}
+        <p class='no-orders-available'>There are no orders</p>
+    {% else %}
+        <div class="row">
+            <div class="col-xs-12">
+            <form>
+                <select class="printer form-control">
+                {% for printer in printers %}
+                <option value="{{forloop.counter0}}">Printer {{forloop.counter}}</option>
+                {% endfor %}
+                </select>
+            </form>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-xs-12">
+                <button type="button" class="btn btn-primary btn-block btn-lg pull-right print_all">Print all</button>
+            </div>
+        </div>
+        <br/>
+        <br/>
+        {% for order in orders %}
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1 order-card">
+            <form class="printer_form form_class" action="{{ printers.0 }}" method="post">
+                <input type="hidden" name="order_number" value="{{order.uuid}}">
+                <input type="hidden" name="customer_surname" value="{{order.customer.last_name}}">
+                <input type="hidden" name="pick_up_time" value="{{order.pick_up_time|date:'Y-m-d G:i'}}">
+                <input type="hidden" name="drop_off_time" value="{{order.drop_off_time|date:'Y-m-d G:i'}}">
+                <input type="hidden" name="expected_back" value="{{order.drop_off_time|expected_back}}">
+                <input type="hidden" name="ticket_id" value="{{order.ticket_id}}">
+                <input type="hidden" name="pieces" value="{{order.pieces}}">
+                {% for item in order.items.all %}
+                <input type="hidden" name="item_{{forloop.counter0}}" value="{{item.quantity}} x {{item.item.vendor_friendly_name}}">
+                {% endfor %}
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h1 class="pull-right"><a href="{% url 'vendors:order' order.pk %}">{{ order.uuid }}</a></h1>
+                        <h5>Ticket: {{ order.ticket_id }}</h5>
+                        <h5>Postcode: {{ order.pick_up_and_delivery_address.postcode|default:''|format_postcode }}</h5>
+                        <h5>Surname: {{ order.customer.last_name }}</h5>
+                        <h5>Value: &pound;{{order.total_price_of_order|floatformat:2|intcomma }}</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        {{ order.pick_up_time|date:'l jS M gA' }} - {{ order.pick_up_time|add_one_hour|time:'gA' }}
+                    </div>
+                    <div class="col-xs-6">
+                        {{ order.drop_off_time|date:'l jS M gA' }} - {{ order.drop_off_time|add_one_hour|time:'gA' }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <input type="submit" class="btn btn-block btn-primary" name="submit" value="Print" />
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+
+{% block js_bottom %}
+$(document).ready(function(){
+    var post_data = function(target, payload) {
+         $.post(target, payload, function(data){
+                $('.notify').addClass("alert-success").html("Printing: " + data.order);
+            }, "json")
+            .fail(function(jqXHR, textStatus, errorThrown){
+                var responseText = jQuery.parseJSON(jqXHR.responseText);
+                $('.notify').addClass("alert-danger").html("Error: " + responseText.message);
+            })
+    };
+    var printers = [];
+    {% for printer in printers %}printers.push("{{printer}}");{% endfor %}
+    var target = printers[0];
+    $( ".printer" ).change(function() {
+        printer = $("option:selected", this).val();
+        target = printers[printer];
+        $('.printer_form').each(function(){
+            $(this).attr('action', target);
+        });
+    });
+
+   $(".form_class").submit(function(event) {
+        event.preventDefault();
+        post_data(target, $(this).serialize());
+    });
+
+    $(".print_all").click(function() {
+        $(".print_all").attr("disabled", true);
+
+        $(".desktop.form_class").each(function(index, value) { 
+            event.preventDefault();
+            var payload = $(this).serialize();
+            setTimeout(function(){
+                post_data(target, payload);
+            }, index * 3000, target, payload);
+        });
+
+        $(".print_all").attr("disabled", false);
+    });
+
+});
+{% endblock %}

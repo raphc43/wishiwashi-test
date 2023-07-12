@@ -1,0 +1,8 @@
+{% load humanize %}
+<div class="row padding-top-sm">
+    <div class="col-xs-12 col-md-12 total-price">
+        <p><strong>Subtotal: &pound; <span id="basket-monetary-amount">{{ total|default:0|floatformat:2|intcomma }}<span></strong></p>
+        <p id="transit">Add <span class="price">£0.00</span> for FREE Pick up &amp; Delivery</p>
+        <p id="free-transit" class="has-success">Your order qualifies for FREE Pick up &amp; Delivery</p>
+    </div>
+</div>

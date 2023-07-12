@@ -1,0 +1,105 @@
+{% extends "vendors/base.html" %}
+
+{% load add_one_hour %}
+{% load humanize %}
+{% load postcodes %}
+
+{% block desktop_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Upcoming</h1>
+        </div>
+    </div>
+
+    {% for item in orders %}
+    <h2>{% if forloop.first %} Today {% else %}{{item.dt|date:'l, jS M'}}{% endif %}</h2>
+        {% if not item.orders %}
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>No orders for this day</p>
+                </div>
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col-xs-12">
+                    <form method="post" action="{% url 'vendors:upcoming_pdf' %}">
+                        {% csrf_token %}
+                        <button class="btn btn-primary pull-right" type="submit">PDF <i class="fa fa-file-pdf-o"></i></button>
+                        <input type="hidden" name="date" value="{{item.dt|date:'Y-m-d'}}">
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th>Surname</th>
+                            <th>Ticket</th>
+                            <th>Postcode</th>
+                            <th>Pick up</th>
+                            <th>Delivery</th>
+                            <th class='number'>Value</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in item.orders %}
+                        <tr data-order-id="{{ order.pk }}">
+                            <td><a href="{% url 'vendors:order' order.pk %}">{{ order.uuid }}</a></td>
+                            <td>{{order.customer.last_name}}</td>
+                            <td><strong>{{ order.ticket_id }}</strong></td>
+                            <td>{{ order.pick_up_and_delivery_address.postcode|default:''|format_postcode }}</td>
+                            <td{% if item.dt == order.pick_up_time.date %} class="success"{% endif %}>{% if item.dt == order.pick_up_time.date %}<strong>{% endif %}{{ order.pick_up_time|date:'D, M jS gA' }} - {{ order.pick_up_time|add_one_hour|time:"gA" }}{% if item.dt == order.pick_up_time.date %}</strong>{% endif %}</td>
+                            <td{% if item.dt == order.drop_off_time.date %} class="success"{% endif %}>{% if item.dt == order.drop_off_time.date %}<strong>{% endif %}{{ order.drop_off_time|date:'D, M jS gA' }} - {{ order.drop_off_time|add_one_hour|time:"gA" }}{% if item.dt == order.drop_off_time.date %}</strong>{% endif %}</td>
+                            <td class='number'>&pound;{{order.total_price_of_order|floatformat:2|intcomma }}</td>
+                            <td>{{order.get_order_status_display}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+{% endblock %}
+
+{% block non_fixed_footer %}non-fixed{% endblock %}
+
+{% block mobile_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Upcoming</h1>
+        </div>
+    </div>
+
+    {% for item in orders %}
+        <h2>{% if forloop.first %} Today {% else %}{{item.dt|date:'l, jS M'}}{% endif %}</h2>
+        {% if not item.orders %}
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>No orders for this day</p>
+                </div>
+            </div>
+        {% else %}
+            <div class="row">
+                    {% for order in item.orders %}
+                    <div class="col-xs-12 order-card">
+                    <div class='left big'><a href="{% url 'vendors:order' order.pk %}">{{ order.uuid }}</a></div>
+                    <div class='right big'>{{ order.pick_up_and_delivery_address.postcode|default:''|format_postcode }}</div>
+                    <div class='clear'></div>
+                    <br/>
+                    <p>Surname: {{order.customer.last_name}}</p>
+                    <p>Pick up: {% if item.dt == order.pick_up_time.date %}<strong>{% endif %}{{ order.pick_up_time|date:'D, M jS gA' }} - {{ order.pick_up_time|add_one_hour|time:"gA" }}{% if item.dt == order.pick_up_time.date %}</strong>{% endif %}</p>
+                    <p>Deliver: {% if item.dt == order.drop_off_time.date %}<strong>{% endif %}{{ order.drop_off_time|date:'D, M jS gA' }} - {{ order.drop_off_time|add_one_hour|time:"gA" }}{% if item.dt == order.drop_off_time.date %}</strong>{% endif %}</p>
+                    <p>{{order.get_order_status_display}}</p>
+                    <p><strong>{{ order.ticket_id }}</strong></p>
+                    </div>
+                    {% endfor %}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>{{question.question}}</h1>
+            <p class="padding-top-sm">{{answer|safe}}</p>
+            <p><a href="{% url 'faq:questions' %}">Return to our list of questions</a></p>
+            <hr>
+            <p class="text-center"><a class="btn btn-primary" href="{% url 'landing' %}">Place a new order <i class="fa fa-angle-double-right"></i></a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+[run]
+omit =
+    */migrations/*
+    */tests.py
+    */test_*.py
+    */wsgi.py
+    */factories.py
+    */base/celery.py
+    */base/local_settings.py
+    manage.py
+    */tests/*
+    */.virtualenvs/*
+    */management/*

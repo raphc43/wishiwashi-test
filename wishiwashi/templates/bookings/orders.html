@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load add_one_hour %}
+{% load humanize %}
+{% load phone_numbers %}
+{% load postcodes %}
+{% load staticfiles %}
+
+{% block css_top %}
+<style>
+table td.number,
+table th.number {
+    text-align: right;
+    padding-right: 16px;
+}
+.order-card {
+    background-color: #F9F9F9;
+    border: 1px solid #F4F4F4;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+.order-card .big {
+    font-size: 24px;
+    font-weight: 700;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Orders</h1>
+            <p>The most recently placed orders will appear at the top of this list.</p>
+        </div>
+    </div>
+
+    <div class="visible-xs">
+    {% if not orders %}
+        <p class='text-center'>You have not yet placed an order.</p>
+    {% else %}
+        {% for order in orders %}
+            <div class="row">
+                <div class="col-xs-12 order-card" data-order-id="{{ order.pk }}">
+                    <p class='pull-left big'>{{ order.pick_up_and_delivery_address.postcode|default:''|format_postcode }}</p>
+                    <p class='pull-right big'>&pound;{{order.total_price_of_order|floatformat:2|intcomma }}</p>
+                    <p class="clearfix"></p>
+                    <p>Pick up <strong>{{ order.pick_up_time|date:'l jS M gA' }} - {{ order.pick_up_time|add_one_hour|time:'gA' }}</strong></p>
+                    <p>Drop off <strong>{{ order.drop_off_time|date:'l jS M gA' }} - {{ order.drop_off_time|add_one_hour|time:'gA' }}</strong></p>
+                    <p>Order # <strong>{{ order.uuid }}</strong></p>
+                    <a class="btn btn-primary btn-block" href="{% url 'bookings:order' uuid=order.uuid %}">View order</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    </div>
+
+    <div class="row hidden-xs">
+        <div class="col-md-12 col-sm-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Postcode</th>
+                        <th>Pick up</th>
+                        <th>Delivery</th>
+                        <th class='number'>Order Value</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if not orders %}
+                        <tr class='no-orders-available'>
+                            <td colspan="5">You have not yet placed an order.</td>
+                        </tr>
+                    {% else %}
+                        {% for order in orders %}
+                            <tr>
+                                <td>{{ order.uuid }}</td>
+                                <td>{{ order.pick_up_and_delivery_address.postcode|default:''|format_postcode }}</td>
+                                <td>{{ order.pick_up_time|date:'l jS M gA' }} - {{ order.pick_up_time|add_one_hour|time:'gA' }}</td>
+                                <td>{{ order.drop_off_time|date:'l jS M gA' }} - {{ order.drop_off_time|add_one_hour|time:'gA' }}</td>
+                                <td class='number'>&pound;{{order.total_price_of_order|floatformat:2|intcomma }}</td>
+                                <td><a href="{% url 'bookings:order' uuid=order.uuid %}">View order</a></td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

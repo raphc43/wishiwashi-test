@@ -1,0 +1,39 @@
+{% extends "emails/base.html" %}
+
+{% load add_one_hour %}
+{% load email_fonts %}
+{% load humanize %}
+{% load postcodes %}
+
+{% block main_content %}
+    Hello,
+    <br />
+    <br />
+    There is a new order available:
+    <br/>
+    <br/>
+    Order # <strong>{{ order.uuid|upper }}</strong>
+    <br/>
+    <br/>
+    Retail value: <strong>&pound;{{ order.total_price_of_order|floatformat:2|intcomma }}</strong>
+    <br/>
+    <br/>
+    Postcode: <strong>{{ order.pick_up_and_delivery_address.postcode|format_postcode }}</strong>
+    <br/>
+    <br/>
+    Pick up: <strong>{{ order.pick_up_time|date:'l jS F' }} </strong>
+                between <strong>{{ order.pick_up_time|time:'gA' }} &amp; {{ order.pick_up_time|add_one_hour|time:'gA' }}</strong>
+    <br/>
+    Delivery: <strong>{{ order.drop_off_time|date:'l jS F' }}</strong>
+                between <strong>{{ order.drop_off_time|time:'gA' }} &amp; {{ order.drop_off_time|add_one_hour|time:'gA' }}</strong>
+    <br />
+    <br />
+    <center>
+        <a href="https://{{DOMAIN}}{% url 'vendors:confirm_accept_order' order_pk=order.pk %}" style="margin: 0; padding: 10px 20px; font-family: {{''|email_fonts}}; font-size: 15px; color: #fff; text-decoration: none; background-color: #ff711e; border: 1px solid #ff711e; line-height: 2; font-weight: bold; text-align: center; display: inline-block; border-radius: 30px; margin-bottom: 5px" target="_blank">Accept this order</a>
+    </center>
+
+    <br />
+    <br />
+    All the best,<br/>
+    Wishi Washi
+{% endblock %}

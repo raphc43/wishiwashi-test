@@ -1,0 +1,400 @@
+{% extends "vendors/base.html" %}
+
+{% load staticfiles %}
+{% load pipeline %}
+
+{% block js_bottom %}
+var now = new Date();
+
+/*** Orders placed monthly ***/
+updatePlacedMonthly("{% url 'customer_stats:placed_time_monthly'%}" + 
+                    '?month=' + 
+                    (now.getMonth() + 1) + 
+                    '&year=' + 
+                    now.getFullYear(),
+                    "#placed_monthly_chart"
+);
+
+// populate drop down
+$('#placed_monthly_opts_select').html(
+    drop_down_monthly("{% url 'customer_stats:placed_time_monthly' %}", "placed_monthly_opts")
+);
+
+// handle on click event
+d3.select('#placed_monthly_opts')
+  .on('change', function() {
+    var url = d3.select(this).property('value');
+    updatePlacedMonthly(url, "#placed_monthly_chart");
+});
+/* end */
+
+/*** Orders placed yearly ***/
+updatePlacedYearly("{% url 'customer_stats:placed_time_yearly' %}?year=" + now.getFullYear(),
+                   "#placed_yearly_chart");
+
+// populate drop down
+$('#placed_yearly_opts_select').html(
+    drop_down_yearly("{% url 'customer_stats:placed_time_yearly' %}", "placed_yearly_opts")
+);
+
+// handle on click event
+d3.select('#placed_yearly_opts')
+  .on('change', function() {
+    var url = d3.select(this).property('value');
+    updatePlacedYearly(url, "#placed_yearly_chart");
+});
+/* end */
+
+
+/*** Amount monthly ***/
+updateAmountMonthly("{% url 'customer_stats:amount_time_monthly'%}" + 
+                    '?month=' + 
+                    (now.getMonth() + 1) + 
+                    '&year=' + 
+                    now.getFullYear(),
+                    "#amount_monthly_chart"
+);
+
+// populate drop down
+$('#amount_monthly_opts_select').html(
+    drop_down_monthly("{% url 'customer_stats:amount_time_monthly' %}", "amount_monthly_opts")
+);
+
+$('#amount_monthly_csv').on('click', function(){
+    var url = $('#amount_monthly_opts').val();
+    window.location.href = url;
+
+})
+
+// handle on click event
+d3.select('#amount_monthly_opts')
+  .on('change', function() {
+    var url = d3.select(this).property('value');
+    updateAmountMonthly(url, "#amount_monthly_chart");
+});
+/* end */
+
+/*** Amount yearly ***/
+updateAmountYearly("{% url 'customer_stats:amount_time_yearly' %}?year=" + now.getFullYear(),
+                   "#amount_yearly_chart");
+
+// populate drop down
+$('#amount_yearly_opts_select').html(
+    drop_down_yearly("{% url 'customer_stats:amount_time_yearly' %}", "amount_yearly_opts")
+);
+
+// handle on click event
+d3.select('#amount_yearly_opts')
+  .on('change', function() {
+    var url = d3.select(this).property('value');
+    updateAmountYearly(url, "#amount_yearly_chart");
+});
+
+$('#amount_yearly_csv').on('click', function(){
+    var url = $('#amount_yearly_opts').val();
+    window.location.href = url;
+
+})
+/* end */
+
+
+
+/*** New customers monthly ***/
+updateCustomersMonthly("{% url 'customer_stats:new_customers_monthly'%}" + 
+                     '?month=' + (
+                     now.getMonth() + 1) + 
+                     '&year=' + 
+                     now.getFullYear(),
+                     "#new_customers_monthly_chart"
+);
+
+$('#new_customers_monthly_opts_select').html(
+    drop_down_monthly("{% url 'customer_stats:new_customers_monthly' %}", "new_customers_monthly_opts")
+);
+
+// handle on click event
+d3.select('#new_customers_monthly_opts')
+  .on('change', function() {
+    var url = d3.select(this).property('value');
+    updateCustomersMonthly(url, "#new_customers_monthly_chart");
+});
+/* end */
+
+/*** New customers yearly ***/
+updateCustomersYearly("{% url 'customer_stats:new_customers_yearly'%}" + '?year=' + now.getFullYear(),
+                      "#new_customers_yearly_chart");
+
+// populate drop down
+$('#new_customers_yearly_opts_select').html(
+    drop_down_yearly("{% url 'customer_stats:new_customers_yearly' %}", "new_customers_yearly_opts")
+);
+
+// handle on click event
+d3.select('#new_customers_yearly_opts')
+  .on('change', function() {
+    var url = d3.select(this).property('value');
+    updateCustomersYearly(url, "#new_customers_yearly_chart");
+});
+/* end */
+
+/*** Pick up/delivery monthly ***/
+updatePickupDeliveryMonthly("{% url 'customer_stats:pickup_delivery_time_monthly'%}" + 
+                          '?month=' + 
+                          (now.getMonth() + 1) + 
+                          '&year=' + now.getFullYear(),
+                          "#pickup_delivery_monthly_chart"
+
+);
+
+$('#pickup_delivery_monthly_opts_select').html(
+    drop_down_monthly("{% url 'customer_stats:pickup_delivery_time_monthly' %}", "pickup_delivery_monthly_opts")
+);
+
+// handle on click event
+d3.select('#pickup_delivery_monthly_opts')
+  .on('change', function() {
+    var url = d3.select(this).property('value');
+    updatePickupDeliveryMonthly(url, "#pickup_delivery_monthly_chart");
+});
+/* end */
+
+/*** Pick up/delivery monthly heatmap ***/
+updatePickupDeliveryHeatmapMonthly("{% url 'customer_stats:pickup_delivery_heatmap_monthly'%}" + 
+                                   '?month=' + 
+                                   (now.getMonth() + 1) + 
+                                   '&year=' + now.getFullYear() + 
+                                   "&pickups=1&deliveries=1",
+                                   "#pickup_delivery_heatmap_monthly_chart"
+
+);
+
+$('#pickup_delivery_heatmap_monthly_opts_select').html(
+    drop_down_monthly("{% url 'customer_stats:pickup_delivery_heatmap_monthly' %}", 
+                      "pickup_delivery_heatmap_monthly_opts")
+);
+// handle on click event
+d3.select('#pickup_delivery_heatmap_monthly_opts')
+  .on('change', function() {
+    var url = d3.select(this).property('value');
+    updatePickupDeliveryHeatmapMonthly(url, "#pickup_delivery_heatmap_monthly_chart");
+});
+
+
+// handle on click event
+d3.select('#pickup_delivery_heatmap_monthly_opts')
+  .on('change', function() {
+    var url = d3.select(this).property('value');
+    if (document.getElementById("pickup_heatmap_monthly_opt").checked){
+        url = url + "&pickups=1";
+    }else{
+        url = url + "&pickups=";
+    }
+    if (document.getElementById("delivery_heatmap_monthly_opt").checked){
+        url = url + "&deliveries=1";
+    }else{
+        url = url + "&deliveries=";
+    }
+    updatePickupDeliveryHeatmapMonthly(url, "#pickup_delivery_heatmap_monthly_chart");
+});
+
+d3.select('#pickup_heatmap_monthly_opt')
+  .on('change', function() {
+    var url = d3.select("#pickup_delivery_heatmap_monthly_opts").property('value');
+    if(this.checked){
+        url = url + "&pickups=1";
+    }else{
+        url = url + "&pickups=";
+    }
+    if (document.getElementById("delivery_heatmap_monthly_opt").checked){
+        url = url + "&deliveries=1";
+    }else{
+        url = url + "&deliveries=";
+    }
+    updatePickupDeliveryHeatmapMonthly(url, "#pickup_delivery_heatmap_monthly_chart");
+});
+d3.select('#delivery_heatmap_monthly_opt')
+  .on('change', function() {
+    var url = d3.select("#pickup_delivery_heatmap_monthly_opts").property('value');
+    if(this.checked){
+        url = url + "&deliveries=1";
+    }else{
+        url = url + "&deliveries=";
+    }
+    if (document.getElementById("pickup_heatmap_monthly_opt").checked){
+        url = url + "&pickups=1";
+    }else{
+        url = url + "&pickups=";
+    }
+    updatePickupDeliveryHeatmapMonthly(url, "#pickup_delivery_heatmap_monthly_chart");
+});
+
+
+
+
+/* end */
+{% endblock %}
+
+{% block desktop_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Stats</h1>
+        </div>
+    </div>
+
+   <div class="row">
+        <div class="col-xs-12">
+            <h3>Placed orders monthly</h3>
+       </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="placed_monthly_opts_select"></div> 
+        </div>
+    </div>
+    <div class="row">
+        <div id="placed_monthly_chart"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h3>Placed orders yearly</h3>
+       </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="placed_yearly_opts_select"></div> 
+        </div>
+    </div>
+    <div class="row">
+        <div id="placed_yearly_chart"></div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h3>
+                Amount monthly
+                <small><a href="javascript:void(0)" id="amount_monthly_csv">Export as CSV</a></small>
+            </h3>
+       </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="amount_monthly_opts_select"></div> 
+        </div>
+    </div>
+    <div class="row">
+        <div id="amount_monthly_chart"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h3>Amount yearly
+                <small><a href="javascript:void(0)" id="amount_yearly_csv">Export as CSV</a></small>
+            </h3>
+       </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="amount_yearly_opts_select"></div> 
+        </div>
+    </div>
+    <div class="row">
+        <div id="amount_yearly_chart"></div>
+    </div>
+
+
+
+
+   <div class="row">
+        <div class="col-xs-12">
+            <h3>New customers monthly</h3>
+       </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="new_customers_monthly_opts_select"></div> 
+        </div>
+    </div>
+    <div class="row">
+        <div id="new_customers_monthly_chart"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h3>New Customers yearly</h3>
+       </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="new_customers_yearly_opts_select"></div> 
+        </div>
+    </div>
+    <div class="row">
+        <div id="new_customers_yearly_chart"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h3>Pickup/Delivery orders monthly</h3>
+       </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="pickup_delivery_monthly_opts_select"></div> 
+        </div>
+    </div>
+   <div class="row">
+        <div id="pickup_delivery_monthly_chart"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h3>Pickup/Delivery day/hour heatmap</h3>
+       </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="pickup_delivery_heatmap_monthly_opts_select"></div> 
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-offset-10 col-xs-2">
+            <div class="checkbox">
+                <label>
+                  <input checked="checked" id="pickup_heatmap_monthly_opt" type="checkbox"> Pickups
+                </label>
+                <label>
+                  <input checked="checked" id="delivery_heatmap_monthly_opt" type="checkbox"> Deliveries
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="pickup_delivery_heatmap_monthly_chart"></div>
+    </div>
+
+{% endblock %}
+
+{% block non_fixed_footer %}non-fixed{% endblock %}
+
+{% block mobile_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Unsupported</h1>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js_bottom_links %}
+<script src="//d3js.org/d3.v3.min.js"></script>
+{% javascript 'stats' %}
+<script src="{% static "scripts/stats-orders-monthly.js" %}"></script>
+<script src="{% static "scripts/stats-orders-yearly.js" %}"></script>
+<script src="{% static "scripts/stats-new-customers-monthly.js" %}"></script>
+<script src="{% static "scripts/stats-new-customers-yearly.js" %}"></script>
+<script src="{% static "scripts/stats-pickup-delivery-monthly.js" %}"></script>
+<script src="{% static "scripts/stats-pickup-delivery-heatmap-monthly.js" %}"></script>
+<script src="{% static "scripts/stats-utils.js" %}"></script>
+{% endblock %}

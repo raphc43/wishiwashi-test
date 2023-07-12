@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load pipeline %}
+
+{% block content %}
+<section style="margin-top:-20px;background: url({% static "images/homepage-jumpers.jpg" %}) #fff center no-repeat;background-size:cover">
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8 col-xs-12 frosted-glass">
+            {% if not request.user.is_authenticated %}
+                <p class="hidden-xs text-center padding-bottom-sm">Used Wishi Washi before? <a href="{% url 'bookings:login' %}">Log in <i class="fa fa-sign-in fa-lg"></i></a></p>
+                <p class="visible-xs text-center padding-bottom-sm">Previous customer? <a href="{% url 'bookings:login' %}">Log in <i class="fa fa-sign-in fa-lg"></i></a></p>
+            {% endif %}
+            <form id="landing-form-desktop" class="hidden-xs" method="post" action="{% url 'landing' %}">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="input-group{% if form.postcode.errors or form.non_field_errors%} has-error{% endif %}">
+                        <label class="sr-only" for="postcode_mobile">Please enter your postcode</label>
+                        <div aria-hidden="true" class="input-group-addon">Please enter<br>your postcode</div>
+                        <input type="text" class="form-control input-lg text-uppercase" maxlength="10" pattern=".{2,10}" title="2 to 10 characters" required id="postcode_desktop" name="postcode" placeholder="SW11" {% if form.postcode.value %}value="{{ form.postcode.value }}"{% endif %}>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-lg" type="submit">Select pick up time <i class="fa fa-angle-double-right"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+            <form id="landing-form-mobile" class="visible-xs" method="post" action="{% url 'landing' %}">
+                {% csrf_token %}
+                <div class="form-group{% if form.postcode.errors or form.non_field_errors%} has-error{% endif %}">
+                    <label for="postcode_mobile">Please enter your postcode</label>
+                    <input type="text" class="form-control input-lg text-uppercase" maxlength="10" pattern=".{2,10}" title="2 to 10 characters" required id="postcode_mobile" name="postcode" placeholder="SW11" {% if form.postcode.value %}value="{{ form.postcode.value }}"{% endif %}>
+                </div>
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Select pick up time <i class="fa fa-angle-double-right"></i></button>
+            </form>
+            {% if form.postcode.errors or form.non_field_errors %}
+                <div class="alert alert-danger" role="alert">
+                    <i class="fa fa-warning" aria-hidden="true"></i>
+                    <span class="sr-only">Error:</span>
+                    {% for error in form.postcode.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <h1 class="padding-top-sm text-center">Dry cleaning &amp; shoe repairs. We get it.</h1>
+            <h4 class="text-center">Over 20 years of expertise</h4>
+        </div>
+    </div>
+</div>
+</section> <!-- / end postcode section-->
+
+<div class="container">
+    <div class="padding-top-md"></div>
+    <div class="row">
+        <div class="col-md-4 text-center">
+          <img style="margin: 0 auto" class="img-responsive" src="{% static "images/tick.png" %}" alt="trusted" width="69" height="69">
+          <h2 class="wishi-color">TRUSTED</h2>
+          <p>We work with individual customers, retailers and big brands. What do they all get from us? The best quality dry cleaning, a commitment to customer service and a speedy response.</p>
+        </div>
+        <div class="col-md-4 text-center">
+          <img style="margin: 0 auto" class="img-responsive" src="{% static "images/tick.png" %}" alt="trusted" width="69" height="69">
+          <h2 class="wishi-color">EXPERIENCED</h2>
+          <p>Garment cleaning and care has been the heart of our business for over 20 years. We are obsessed with achieving the best results for our customers, and without that we are nothing... So we take it pretty seriously.</p>
+        </div>
+        <div class="col-md-4 text-center">
+          <img style="margin: 0 auto" class="img-responsive" src="{% static "images/tick.png" %}" alt="trusted" width="69" height="69">
+          <h2 class="wishi-color">CLIENTS</h2>
+          <p>As a testament to our quality service, we have built relationships with Harrods, Christian Dior, Chanel, Valentino, Virgin Atlantic and a delivery service to London's premier residences.</p>
+        </div>
+    </div>
+    <div class="padding-bottom-sm"></div>
+</div>
+
+<section style="background: url({% static "images/homepage-suits.jpg" %}) #fff center no-repeat;background-size:cover">
+<div class="container">
+    <div class="padding-top"></div>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-xs-12 frosted-glass-lighter">
+            <h1 class="padding-top-sm text-center"><span class="wishi-color">OVER 20 YEARS OF</span><br>
+                <span class="washi-color">DRY CLEANING EXPERIENCE</span></h1>
+            <h4 class="text-center padding-top-sm">Hello, we're Wishi Washi.</h4>
+            <p class="text-center">Fabric cleaning and care has been at the heart of our business for over 20 years.</p>
+            <p class="text-center padding-bottom-sm">If we don't achieve great results, and have great, loyal customers, we're nothing,
+            so we take it pretty seriously.</p>
+            <img class="img-responsive center-block" src="{% static "images/20-years.png" %}" width="126" height="109" alt="20 years experience">
+        </div>
+    </div>
+    <div class="padding-bottom"></div>
+</div>
+</section>
+
+{% endblock %}
+
+{% block ga_track_custom_var %}
+    {% if form.postcode.errors %}
+        {% for error in form.postcode.errors %}
+            _gaq.push(['_trackEvent', 'form_error_postcode', '{{ error|escapejs }}']);
+        {% endfor %}
+    {% endif %}
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            _gaq.push(['_trackEvent', 'form_error_postcode', '{{ error|escapejs }}']);
+        {% endfor %}
+    {% endif %}
+{% endblock %}

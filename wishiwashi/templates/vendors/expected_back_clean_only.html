@@ -1,0 +1,149 @@
+{% extends "vendors/base.html" %}
+
+{% load add_one_hour %}
+{% load humanize %}
+{% load postcodes %}
+
+{% block desktop_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Expected Back Clean Only Orders</h1>
+        </div>
+    </div>
+    {% if past_unconfirmed %}
+    <div class="row">
+        <div class="col-xs-12 alert alert-warning">
+            <h3>Unconfirmed orders</h3>
+            {% for unconfirmed in past_unconfirmed %}
+            <p>{{ unconfirmed.clean_only_order.order }} ({{ unconfirmed.clean_only_order.order.ticket_id }}) - was expected back {{ unconfirmed.expected_back }} ({{ unconfirmed.expected_back|timesince }} ago)</p>
+            {% endfor %}
+            <p><a href="{% url 'vendors:expected_back_clean_only_all' %}">View all unconfirmed expected back orders</a></p>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="alert notify"></div>
+    {% for item in cleanonly %}
+    <h2>{% if forloop.counter == 1 %} Yesterday {% elif forloop.counter == 2 %} Today {% else %} Tomorrow {% endif %}</h2>
+        {% if not item.results %}
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>No orders expected back</p>
+                </div>
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col-xs-12">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th>Ticket</th>
+                            <th>Pieces</th>
+                            <th>Pick up</th>
+                            <th>Delivery</th>
+                            <th class='number'>Value</th>
+                            <th>Status</th>
+                            <th>Vendor</th>
+                            <th>Expected Back</th>
+                            <th>Received Back</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for obj in item.results %}
+                    <tr{% if obj.confirmed_back %} class="success"{% endif %} data-order-id="{{ obj.clean_only_order.order.pk }}">
+                        <form class="expected_back_confirm">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{obj.pk}}">
+                            <td><a href="{% url 'vendors:order' obj.clean_only_order.order.pk %}">{{ obj.clean_only_order.order.uuid }}</a></td>
+                            <td><strong>{{ obj.clean_only_order.order.ticket_id }}</strong></td>
+                            <td class='number'>{{ obj.pieces }}</td>
+                            <td>{{ obj.clean_only_order.order.pick_up_time|date:'D, M jS gA' }} - {{ obj.clean_only_order.order.pick_up_time|add_one_hour|time:"gA" }}</td>
+                            <td>{{ obj.clean_only_order.order.drop_off_time|date:'D, M jS gA' }} - {{ obj.clean_only_order.order.drop_off_time|add_one_hour|time:"gA" }}</td>
+                            <td class='number'>&pound;{{ obj.clean_only_order.order.total_price_of_order|floatformat:2|intcomma }}</td>
+                            <td>{{obj.clean_only_order.order.get_order_status_display}}</td>
+                            <td>{{obj.clean_only_order.assigned_to_vendor.company_name}}</td>
+                            <td><strong>{{ obj.expected_back|date:'D, jS M P' }}</strong></td>
+                            {% if not obj.confirmed_back %}
+                            <td><button id="desktop_{{obj.pk}}" type="submit" class="btn btn-danger">Confirm</button></td>
+                            {% else %}
+                                <td>Confirmed</td>
+                            {% endif %}
+                        </form>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <p class="pull-right"><a href="{% url 'vendors:expected_back_clean_only_all' %}">View all unconfirmed expected back orders</a></p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block non_fixed_footer %}non-fixed{% endblock %}
+
+{% block mobile_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Expected Back Clean Only Orders</h1>
+        </div>
+    </div>
+
+    <div class="alert notify"></div>
+    {% for item in cleanonly %}
+    <h2>{% if forloop.counter == 1 %} Yesterday {% elif forloop.counter == 2 %} Today {% else %} Tomorrow {% endif %}</h2>
+        {% if not item.results %}
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>No orders expected back</p>
+                </div>
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col-xs-12">
+                    {% for obj in item.results %}
+                    <form class="expected_back_confirm">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{obj.pk}}">
+                    <div class="col-xs-12 order-card">
+                        <div class='left big'><a href="{% url 'vendors:order' obj.clean_only_order.order.pk %}">{{ obj.clean_only_order.order.uuid }}</a></div>
+                        <div class='right big'><strong>{{ obj.clean_only_order.order.ticket_id }}</strong></div>
+                        <div class='clear'></div>
+                        <br/>
+                        <p>Pick up: {{ obj.clean_only_order.order.pick_up_time|date:'D, M jS gA' }} - {{ obj.clean_only_order.order.pick_up_time|add_one_hour|time:"gA" }}</p>
+                        <p>Deliver: {{ obj.clean_only_order.order.drop_off_time|date:'D, M jS gA' }} - {{ obj.clean_only_order.order.drop_off_time|add_one_hour|time:"gA" }}</p>
+                        <p>Order Value: &pound;{{ obj.clean_only_order.order.total_price_of_order|floatformat:2|intcomma }}</p>
+                        <p>Status: {{obj.clean_only_order.order.get_order_status_display}}</p>
+                        <p>Clean only: {{obj.clean_only_order.assigned_to_vendor.company_name}}</p>
+                        <p>Expected back: <strong>{{ obj.expected_back|date:'D, jS M P' }}</strong></p>
+                        <p>Pieces: {{ obj.pieces }}</p>
+                        {% if not obj.confirmed_back %}
+                            <p><button id="mobile_{{obj.pk}}" type="submit" class="btn btn-danger">Confirm</button></p>
+                        {% else %}
+                            <p class="success">Confirmed</p>
+                        {% endif %}
+                    </div>
+                    </form>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <p class="pull-right"><a href="{% url 'vendors:expected_back_clean_only_all' %}">View all unconfirmed expected back orders</a></p>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js_bottom %}
+{% include 'snippets/expected_back.js' %}
+{% endblock %}

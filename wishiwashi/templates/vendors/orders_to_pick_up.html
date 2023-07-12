@@ -1,0 +1,81 @@
+{% extends "vendors/base.html" %}
+
+{% block desktop_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Orders to pick up</h1>
+
+            {% if orders %}
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form method="post" action="{% url 'vendors:orders_to_pick_up_pdf' %}">
+                            {% csrf_token %}
+                            <button class="btn btn-primary pull-right" type="submit">Download PDF <i class="fa fa-file-pdf-o"></i></button>
+                        </form>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+            {% endif %}
+
+            <form action="{% url 'vendors:throw_orders_back_in_pool' %}" method="post">
+                {% csrf_token %}
+                <table>
+                    <thead>
+                        <tr>
+                            {% if is_wishi_washi %}
+                                <th><input type="submit" name="submit" value="Throw back" /></th>
+                            {% endif %}
+                            <th>Postcode</th>
+                            <th>Pick up</th>
+                            <th>Delivery</th>
+                            <th class='number'>Order Value</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% if not orders %}
+                            <tr class='no-orders-available'>
+                                <td colspan="6">There are no orders to pick up today.</td>
+                            </tr>
+                        {% else %}
+                            {% for order in orders %}
+                                {% include "vendors/orders_list_item_desktop.html" %}
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block non_fixed_footer %}non-fixed{% endblock %}
+
+{% block mobile_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Orders to pick up</h1>
+        </div>
+    </div>
+
+    {% if not orders %}
+        <p class='no-orders-available'>There are no orders to pick up today.</p>
+    {% else %}
+        <div class="row">
+            <div class="col-xs-12">
+                <form method="post" action="{% url 'vendors:orders_to_pick_up_pdf' %}">
+                    {% csrf_token %}
+                    <button class="btn btn-primary pull-right" type="submit">Download PDF <i class="fa fa-file-pdf-o"></i></button>
+                </form>
+            </div>
+        </div>
+        <br/>
+        <br/>
+
+        {% for order in orders %}
+            {% include "vendors/orders_list_item_mobile.html" %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

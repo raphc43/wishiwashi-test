@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block css_top %}
+<link href='//fonts.googleapis.com/css?family=Lobster:400' rel='stylesheet' type='text/css'>
+<style>
+.points li:before {
+font-family: 'FontAwesome';
+content: '\f046';
+margin: 0 5px 0 0;
+color: #3EADE0;
+font-size: 2em;
+vertical-align: -20%;
+}
+.points li{
+vertical-align: top;
+font-weight: bold;
+}
+.points p{
+padding-top:0;
+margin-top:0;
+padding-left: 35px;
+font-weight: normal;
+}
+.jumbotron{
+padding-top:0;
+margin-top:0;
+margin-bottom:0;
+padding-bottom:0;
+}
+.header{
+margin-bottom:0;
+padding-top:0;
+background-color:#fff;
+font-family: 'Lobster', cursive;
+}
+.header h1{
+color: #3EADE0;
+}
+.voucher{
+font-weight: bold;
+font-size: 2em;
+}
+#landing-form-mobile label{
+color:#404040;
+}
+#landing-form-desktop .input-group-addon {
+color:#404040;
+font-weight:bold;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div style="margin-top:-20px" class="row">
+        <div class="jumbotron header text-center">
+            <h1 style="margin-bottom:5px" class="text-center">Thank You!</h1>
+            <h2>We have now moved 100% online!!</h2>
+            <h2>Thanks for being wonderful, supportive clients at our Clapham Junction store for 25 years.</h2>
+        `   <img class="img-responsive center-block" src="{% static "images/clapham-shop2.jpg" %}" width="250" height="141" alt="Clapham Junction Team">
+        </div>
+    </div>
+    <div class="row">
+        <div class="padding-top-sm"></div>
+        <div class="col-md-offset-4 col-sm-offset-2 col-sm-8 col-md-6">
+            <ul class="points list-unstyled">
+                <li> FREE home pickup/delivery<p>You choose your 1 hour time slots</p></li>
+                <li> Cheaper than instore prices<p>Up to 20% lower tariffs</p></li>
+                <li> Convenient<p>8am-10pm pickup/delivery</li>
+                <li> Trusted customer service<p>Knowing you &amp; your needs and requirements will always be our priority</p></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="padding-top-sm"></div>
+        <div class="col-sm-offset-4 col-sm-4 alert alert-success text-center" role="alert">
+            Get an EXTRA <strong>20%</strong> OFF with voucher code:<p><span class="voucher">YES20</span></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8 col-xs-12 postcode">
+            <form id="landing-form-desktop" class="hidden-xs" method="post" action="{% url 'landing' %}">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="input-group">
+                        <label class="sr-only" for="postcode_mobile">Please enter your postcode</label>
+                        <div aria-hidden="true" class="input-group-addon">Please enter<br>your postcode</div>
+                        <input type="text" class="form-control input-lg text-uppercase" maxlength="10" pattern=".{2,10}" title="2 to 10 characters" required id="postcode_desktop" name="postcode" placeholder="SW11">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-lg" type="submit">Select pick up time <i class="fa fa-angle-double-right"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+            <form id="landing-form-mobile" class="visible-xs" method="post" action="{% url 'landing' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="postcode" for="postcode_mobile">Please enter your postcode</label>
+                    <input type="text" class="form-control input-lg text-uppercase" maxlength="10" pattern=".{2,10}" title="2 to 10 characters" required id="postcode_mobile" name="postcode" placeholder="SW11">
+                </div>
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Select pick up time <i class="fa fa-angle-double-right"></i></button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="padding-top-sm col-sm-12 text-center">
+            <p><strong>The store officially closes 20th October 2015. Join us from 5pm for some hugs, fun and laughter!</strong></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

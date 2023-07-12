@@ -1,0 +1,506 @@
+{% extends "vendors/base.html" %}
+
+{% load add_one_hour %}
+{% load humanize %}
+{% load phone_numbers %}
+{% load postcodes %}
+{% load multiply %}
+
+{% block desktop_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            {% if order.placed %}
+            <form method="post" action="{% url 'vendors:pdf_order' order.pk %}">
+                {% csrf_token %}
+                <button class="btn btn-primary pull-right" type="submit">PDF <i class="fa fa-file-pdf-o"></i></button>
+            </form>
+            {% endif %}
+            <h1>Order: {{ order.uuid|upper }}</h1>
+            <h1>Ticket: {{ order.ticket_id }}</h1>
+        </div>
+    </div>
+
+    {% if form.non_field_errors %}
+        <div class="row">
+            <div class="col-xs-12">
+                {% if form.non_field_errors %}
+                    <p class="error">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if issues %}
+        <h2>Unresolved issues with this order</h2>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <table>
+                    <tr>
+                        <th>Category</th>
+                        <th>Item</th>
+                        <th>Issue</th>
+                    </tr>
+
+                    {% for issue in issues %}
+                        <tr>
+                            <td>
+                                {{ issue.issue.category_name }}
+                            </td>
+                            <td>
+                                {% if issue.item %}
+                                    {{ issue.item.vendor_friendly_name }}
+                                {% else %}
+                                    n/a
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if issue.is_other_issue %}
+                                    {{ issue.other_issue_details }}
+                                {% else %}
+                                    {{ issue.issue.description }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <br/>
+        <br/>
+    {% endif %}
+
+
+    <div class="row">
+        <div class="col-xs-6">
+            <h2>Customer</h2>
+        </div>
+    </div>
+
+
+    <div class="labels-above-inputs">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class='plain-text'>
+                    <p>{{ order.customer.first_name }} {{ order.customer.last_name }}, #{{ order.customer.pk|stringformat:"05d" }}</p>
+                </div>
+            </div>
+
+            <div class="col-xs-6">
+                <form method="post" action="{% url 'vendors:order' order.pk %}">
+                    {% csrf_token %}
+                    <label for="vendor_issue_pk">Report issue with these details</label>
+                    <select name="vendor_issue_contact_issue_pk" id="vendor_issue_contact_issue_pk" class='vendor_issue'>
+                        <option value=""></option>
+                        {% for issue in contact_issues %}
+                            <option value="{{ issue.pk }}" {% ifequal form.vendor_issue_contact_issue_pk issue.pk %}selected{% endifequal %}>{{ issue.description }}</option>
+                        {% endfor %}
+                        <option value="-1" {% if form.other_contact_issue_details.errors %}selected{% endif %}>Other</option>
+                    </select>
+
+                    <label 
+                        for="other_contact_issue_details" 
+                        {% if not form.other_contact_issue_details.errors %}style="display: none"{% endif %} 
+                        class='vendor_issue'
+                    >Please describe the issue in detail:</label>
+                    <textarea 
+                        rows="5" 
+                        name="other_contact_issue_details" 
+                        id="other_contact_issue_details" 
+                        {% if not form.other_contact_issue_details.errors %}style="display: none"{% endif %} 
+                        class='vendor_issue {% if form.other_contact_issue_details.errors %}form-element-error{% endif %}'
+                    >{{form.other_contact_issue_details.value|default:''}}</textarea>
+                    
+                    {% if form.other_contact_issue_details.errors %}
+                        {% for error in form.other_contact_issue_details.errors %}
+                            <span class="form-element-error vendor_issue">{{ error|escape }}</span>
+                        {% endfor %}
+                    {% endif %}
+
+                    <input type="submit" value="Report" />
+                </form>
+            </div>
+        </div>
+        <br/>
+        <br/>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Drop off and Pick up details</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6">
+                <div class='plain-text'>
+                    <p>{{ order.pick_up_and_delivery_address.flat_number_house_number_building_name }} 
+                    {{ order.pick_up_and_delivery_address.address_line_1 }}<br/>
+
+                    {% if order.pick_up_and_delivery_address.address_line_2 %}
+                        {{ order.pick_up_and_delivery_address.address_line_2 }}<br/>
+                    {% endif %}
+                    London <strong>{{ order.pick_up_and_delivery_address.postcode|format_postcode }}</strong><br/>
+                    <br/>
+                    Pick up: <strong>{{ order.pick_up_time|date:'l jS M gA' }} - {{ order.pick_up_time|add_one_hour|time:'gA' }}</strong><br/>
+                    Drop off: <strong>{{ order.drop_off_time|date:'l jS M gA' }} - {{ order.drop_off_time|add_one_hour|time:'gA' }}</strong><br/>
+                    {% if order.voucher %}
+                    Voucher: <strong>{{ order.voucher.voucher_code }} ({{ order.voucher.percentage_off}}%)</strong><br/>
+                    {% endif %}
+                    Total: <strong>&pound;{{ order.total_price_of_order}}</strong></p>
+                </div>
+            </div>
+
+            <div class="col-xs-6">
+                <form method="post" action="{% url 'vendors:order' order.pk %}">
+                    {% csrf_token %}
+                    <label for="vendor_pick_up_and_delivery_issue_pk">Report issue with these details</label>
+                    <select name="vendor_pick_up_and_delivery_issue_pk" id="vendor_pick_up_and_delivery_issue_pk" class='vendor_issue'>
+                        <option value=""></option>
+                        {% for issue in pick_up_drop_off_issues %}
+                            <option value="{{ issue.pk }}" {% ifequal form.vendor_pick_up_and_delivery_issue_pk issue.pk %}selected{% endifequal %}>{{ issue.description }}</option>
+                        {% endfor %}
+                        <option value="-1" {% if form.other_pick_up_and_delivery_issue_details.errors %}selected{% endif %}>Other</option>
+                    </select>
+
+                    <label 
+                        for="other_pick_up_and_delivery_issue_details" 
+                        {% if not form.other_pick_up_and_delivery_issue_details.errors %}style="display: none"{% endif %} 
+                        class='vendor_issue'
+                    >Please describe the issue in detail:</label>
+                    <textarea 
+                        rows="5" 
+                        name="other_pick_up_and_delivery_issue_details" 
+                        id="other_pick_up_and_delivery_issue_details" 
+                        {% if not form.other_pick_up_and_delivery_issue_details.errors %}style="display: none"{% endif %} 
+                        class='vendor_issue {% if form.other_pick_up_and_delivery_issue_details.errors %}form-element-error{% endif %}'
+                    >{{form.other_pick_up_and_delivery_issue_details.value|default:''}}</textarea>
+                    
+                    {% if form.other_pick_up_and_delivery_issue_details.errors %}
+                        {% for error in form.other_pick_up_and_delivery_issue_details.errors %}
+                            <span class="form-element-error vendor_issue">{{ error|escape }}</span>
+                        {% endfor %}
+                    {% endif %}
+
+                    <input type="submit" value="Report" />
+                </form>
+            </div>
+        </div>
+        <br/>
+        <br/>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Items for washing / dry cleaning</h2>
+
+                {% if form.other_items_issue_details.errors %}
+                    {% for error in form.other_items_issue_details.errors %}
+                        <span class="form-element-error vendor_issue">{{ error|escape }}</span>
+                    {% endfor %}
+                {% endif %}
+                
+                <table>
+                    <tr>
+                        <th>Category</th>
+                        <th>Item</th>
+                        <th class='number'>Quantity</th>
+                        <th class='number'>Pieces</th>
+                        <th>Report problem</th>
+                    </tr>
+
+                    {% for item_and_quantity in order.items.all %}
+                        <tr>
+                            <td>{{ item_and_quantity.item.category.name }}</td>
+                            <td>{{ item_and_quantity.item.vendor_friendly_name }}</td>
+                            <td class='number'>{{ item_and_quantity.quantity }}</td>
+                            <td class='number'>{{ item_and_quantity.quantity|multiply:item_and_quantity.item.pieces }}</td>
+                            <td>
+                                <form method="post" action="{% url 'vendors:order' order.pk %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="item_pk" value="{{ item_and_quantity.item.pk }}" />
+
+                                    <select name="vendor_items_issue_pk" id="vendor_items_issue_pk" class='vendor_issue'>
+                                        <option value=""></option>
+                                        {% for issue in item_issues %}
+                                            <option value="{{ issue.pk }}">{{ issue.description }}</option>
+                                        {% endfor %}
+                                        <option value="-1">Other</option>
+                                    </select>
+
+                                    <label 
+                                        for="other_items_issue_details" 
+                                        style="display: none"
+                                        class='vendor_issue'
+                                    >Please describe the issue in detail:</label>
+                                    <textarea 
+                                        rows="5" 
+                                        name="other_items_issue_details" 
+                                        id="other_items_issue_details" 
+                                        style="display: none"
+                                        class='vendor_issue {% if form.other_pick_up_and_delivery_issue_details.errors %}form-element-error{% endif %}'
+                                    ></textarea>
+
+                                    <input type="submit" value="Report" />
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block non_fixed_footer %}non-fixed{% endblock %}
+
+{% block mobile_main %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Order: {{ order.uuid|upper }}</h1>
+            <h1>Ticket: {{ order.ticket_id }}</h1>
+        </div>
+    </div>
+
+    {% if form.non_field_errors %}
+        <div class="row">
+            <div class="col-xs-12">
+                {% if form.non_field_errors %}
+                    <p class="error">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if issues %}
+        <h2>Unresolved issues with this order</h2>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <table>
+                    <tr>
+                        <th>Category</th>
+                        <th>Item</th>
+                        <th>Issue</th>
+                    </tr>
+
+                    {% for issue in issues %}
+                        <tr>
+                            <td>
+                                {{ issue.issue.category_name }}
+                            </td>
+                            <td>
+                                {% if issue.item %}
+                                    {{ issue.item.vendor_friendly_name }}
+                                {% else %}
+                                    n/a
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if issue.is_other_issue %}
+                                    {{ issue.other_issue_details }}
+                                {% else %}
+                                    {{ issue.issue.description }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <br/>
+        <br/>
+    {% endif %}
+    
+    <div class="labels-above-inputs">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Customer contact details</h2>
+                <div class='plain-text'>
+                    <p>{{ order.customer.first_name }} {{ order.customer.last_name }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <form method="post" action="{% url 'vendors:order' order.pk %}">
+                    {% csrf_token %}
+                    <label for="vendor_issue_pk">Report issue with these details</label>
+                    <select name="vendor_issue_contact_issue_pk" id="vendor_issue_contact_issue_pk" class='vendor_issue full-width'>
+                        <option value=""></option>
+                        {% for issue in contact_issues %}
+                            <option value="{{ issue.pk }}" {% ifequal form.vendor_issue_contact_issue_pk issue.pk %}selected{% endifequal %}>{{ issue.description }}</option>
+                        {% endfor %}
+                        <option value="-1" {% if form.other_contact_issue_details.errors %}selected{% endif %}>Other</option>
+                    </select>
+
+                    <label 
+                        for="other_contact_issue_details" 
+                        {% if not form.other_contact_issue_details.errors %}style="display: none"{% endif %} 
+                        class='vendor_issue move-down-10-px'
+                    >Please describe the issue in detail:</label>
+                    <div class="clear"></div>
+                    <textarea 
+                        rows="5" 
+                        name="other_contact_issue_details" 
+                        id="other_contact_issue_details" 
+                        {% if not form.other_contact_issue_details.errors %}style="display: none"{% endif %} 
+                        class='vendor_issue full-width {% if form.other_contact_issue_details.errors %}form-element-error{% endif %}'
+                    >{{form.other_contact_issue_details.value|default:''}}</textarea>
+                    
+                    {% if form.other_contact_issue_details.errors %}
+                        {% for error in form.other_contact_issue_details.errors %}
+                            <div class="clear"></div>
+                            <span class="form-element-error vendor_issue">{{ error|escape }}</span>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="clear"></div>
+                    <input type="submit" value="Report" class="move-down-10-px" />
+                </form>
+            </div>
+        </div>
+        <br/>
+        <br/>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Drop off and Pick up details</h2>
+                <div class='plain-text'>
+                    <p>{{ order.pick_up_and_delivery_address.flat_number_house_number_building_name }}
+                    {{ order.pick_up_and_delivery_address.address_line_1 }}<br/>
+                    {% if order.pick_up_and_delivery_address.address_line_2 %}
+                        {{ order.pick_up_and_delivery_address.address_line_2 }}<br/>
+                    {% endif %}
+                    London <strong>{{ order.pick_up_and_delivery_address.postcode|format_postcode }}</strong><br/>
+                    <br/>
+                    Pick up <strong>{{ order.pick_up_time|date:'l jS M gA' }} - {{ order.pick_up_time|add_one_hour|time:'gA' }}</strong><br/>
+                    Drop off: <strong>{{ order.drop_off_time|date:'l jS M gA' }} - {{ order.drop_off_time|add_one_hour|time:'gA' }}</strong><br/>
+                    {% if order.voucher %}
+                    Voucher: <strong>{{ order.voucher.voucher_code }} ({{ order.voucher.percentage_off}}%)</strong><br/>
+                    {% endif %}
+                    Total: <strong>&pound;{{ order.total_price_of_order}}</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <form method="post" action="{% url 'vendors:order' order.pk %}">
+                    {% csrf_token %}
+                    <label for="vendor_pick_up_and_delivery_issue_pk">Report issue with these details</label>
+                    <select name="vendor_pick_up_and_delivery_issue_pk" id="vendor_pick_up_and_delivery_issue_pk" class='vendor_issue full-width'>
+                        <option value=""></option>
+                        {% for issue in pick_up_drop_off_issues %}
+                            <option value="{{ issue.pk }}" {% ifequal form.vendor_pick_up_and_delivery_issue_pk issue.pk %}selected{% endifequal %}>{{ issue.description }}</option>
+                        {% endfor %}
+                        <option value="-1" {% if form.other_pick_up_and_delivery_issue_details.errors %}selected{% endif %}>Other</option>
+                    </select>
+
+                    <label 
+                        for="other_pick_up_and_delivery_issue_details" 
+                        {% if not form.other_pick_up_and_delivery_issue_details.errors %}style="display: none"{% endif %} 
+                        class='vendor_issue move-down-10-px'
+                    >Please describe the issue in detail:</label>
+                    <div class="clear"></div>
+                    <textarea 
+                        rows="5" 
+                        name="other_pick_up_and_delivery_issue_details" 
+                        id="other_pick_up_and_delivery_issue_details" 
+                        {% if not form.other_pick_up_and_delivery_issue_details.errors %}style="display: none"{% endif %} 
+                        class='vendor_issue full-width {% if form.other_pick_up_and_delivery_issue_details.errors %}form-element-error{% endif %}'
+                    >{{form.other_pick_up_and_delivery_issue_details.value|default:''}}</textarea>
+                    
+                    {% if form.other_pick_up_and_delivery_issue_details.errors %}
+                        {% for error in form.other_pick_up_and_delivery_issue_details.errors %}
+                            <div class="clear"></div>
+                            <span class="form-element-error vendor_issue">{{ error|escape }}</span>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="clear"></div>
+                    <input type="submit" value="Report" class="move-down-10-px" />
+                </form>
+            </div>
+        </div>
+        <br/>
+        <br/>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Items for washing / dry cleaning</h2>
+                
+                <table>
+                    <tr>
+                        <th>Category</th>
+                        <th>Item</th>
+                        <th class='number'>Quantity</th>
+                    </tr>
+
+                    {% for item_and_quantity in order.items.all %}
+                        <tr>
+                            <td>{{ item_and_quantity.item.category.name }}</td>
+                            <td>{{ item_and_quantity.item.vendor_friendly_name }}</td>
+                            <td class='number'>{{ item_and_quantity.quantity }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan='2'>
+                                <form method="post" action="{% url 'vendors:order' order.pk %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="item_pk" value="{{ item_and_quantity.item.pk }}" />
+
+                                    <select name="vendor_items_issue_pk" id="vendor_items_issue_pk" class='vendor_issue full-width'>
+                                        <option value=""></option>
+                                        {% for issue in item_issues %}
+                                            <option value="{{ issue.pk }}">{{ issue.description }}</option>
+                                        {% endfor %}
+                                        <option value="-1">Other</option>
+                                    </select> 
+                                    <div class="clear"></div>
+
+                                    <label 
+                                        for="other_items_issue_details" 
+                                        style="display: none"
+                                        class='vendor_issue move-down-10-px'
+                                    >Please describe the issue in detail:</label>
+                                    <div class="clear"></div>
+                                    <textarea 
+                                        rows="5" 
+                                        name="other_items_issue_details" 
+                                        id="other_items_issue_details" 
+                                        style="display: none"
+                                        class='vendor_issue full-width {% if form.other_pick_up_and_delivery_issue_details.errors %}form-element-error{% endif %}'
+                                    ></textarea>
+
+                                    <input type="submit" value="Report" class="move-down-10-px" />
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js_bottom %}
+    $(document.body).ready(function() {
+        $('select.vendor_issue').on('click touchend change blur tap', function() {
+            if ($('option:selected', $(this).parent()).val() == '-1') {
+                $('textarea.vendor_issue', $(this).parent()).show();
+                $('label.vendor_issue', $(this).parent()).show();
+                $('span.vendor_issue', $(this).parent()).show();
+            } else {
+                $('textarea.vendor_issue', $(this).parent()).hide();
+                $('label.vendor_issue', $(this).parent()).hide();
+                $('span.vendor_issue', $(this).parent()).hide();
+            }
+        });
+    });
+{% endblock %}
